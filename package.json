@@ -1,0 +1,29 @@
+{
+  "name": "effin-redux",
+  "version": "0.1.0",
+  "description": "Extend redux-toolkit with side effect handling and layered reducers",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "vitest"
+  },
+  "author": "Marcell Endrey endrey.marcell@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "@reduxjs/toolkit": "^1.9.0",
+    "@types/lodash": "^4.14.189",
+    "prettier": "^2.7.1",
+    "redux": "^4.2.0",
+    "typescript": "^4.9.3",
+    "vitest": "^0.25.2"
+  },
+  "peerDependencies": {
+    "@reduxjs/toolkit": "^1.9.0",
+    "redux": "^4.2.0"
+  },
+  "dependencies": {
+    "immer": "^9.0.16",
+    "lodash": "^4.17.21"
+  }
+}
