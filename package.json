@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "check": "tsc --noEmit",
-    "test": "vitest"
+    "test:type": "tsc --noEmit",
+    "test:func": "vitest"
   },
   "author": "Marcell Endrey endrey.marcell@gmail.com",
   "license": "MIT",
