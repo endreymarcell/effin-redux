@@ -27,3 +27,9 @@ export function typedObjectEntries<Object extends { [key: string | number | symb
 ): Array<[keyof Object, any]> {
   return !!object ? (Object.entries(object) as Array<[keyof Object, any]>) : [];
 }
+
+export function typedObjectFromEntries<Keys extends string>(
+  entries: Array<[key: Keys, value: any]>,
+): Record<Keys, any> {
+  return Object.fromEntries(entries) as Record<Keys, any>;
+}

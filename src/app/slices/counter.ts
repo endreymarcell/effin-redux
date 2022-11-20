@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type CounterState = {
+export type CounterState = {
   count: number;
   isCounting: boolean;
 };

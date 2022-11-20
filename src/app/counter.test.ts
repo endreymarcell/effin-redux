@@ -5,6 +5,7 @@ import { counterSlice } from "./slices/counter";
 describe("counter slice", () => {
   test("actions work as expected", () => {
     const store = createAppStore();
+    console.log(store.getState());
     expect(store.getState().counter.count).toBe(0);
 
     store.dispatch(counterSlice.actions.startCountingClicked());

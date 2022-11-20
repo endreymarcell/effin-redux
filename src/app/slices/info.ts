@@ -9,7 +9,7 @@ type BadStatus = {
   error: string;
 };
 
-type InfoState = {
+export type InfoState = {
   appStatus: GoodStatus | BadStatus;
 };
 
