@@ -1,29 +1,28 @@
 import { AnyAction, combineReducers } from "redux";
-import { counterSlice, CounterState } from "../app/slices/counter";
-import { infoSlice, InfoState } from "../app/slices/info";
-import { fizzBuzzSlice, FizzBuzzState } from "../app/slices/fizzBuzz";
+import { CounterState } from "../app/slices/counter";
+import { InfoState } from "../app/slices/info";
+import { FizzBuzzState } from "../app/slices/fizzBuzz";
 import { typedObjectFromEntries } from "../utils";
+import { Slice } from "@reduxjs/toolkit";
 
-type FirstLayer = [typeof counterSlice, typeof infoSlice];
-type SecondLayer = [typeof fizzBuzzSlice];
-
-type Layers = [FirstLayer, SecondLayer];
+type Layers = Array<Array<Slice>>;
 type AppState = { counter: CounterState; info: InfoState; fizzBuzz: FizzBuzzState };
 
-export function buildInitialState(layers: Layers) {
-  const allSlicesFlattened = layers.flat();
-  type AllSliceNames = typeof allSlicesFlattened[number]["name"];
-  const allInitialStates: Array<[key: AllSliceNames, value: any]> = allSlicesFlattened.map((slice) => [
+export function buildInitialState<TSlices extends Slice[]>(slices: TSlices) {
+  type SliceNames = typeof slices[number]["name"];
+  const allInitialStates: Array<[key: SliceNames, value: any]> = slices.map((slice) => [
     slice.name,
     slice.getInitialState(),
   ]);
-  return typedObjectFromEntries(allInitialStates);
+  const result: { [key in SliceNames]: ReturnType<TSlices[0]["getInitialState"]> } =
+    typedObjectFromEntries(allInitialStates);
+  return result;
 }
 
 export function buildReducerMatrix<TState = AppState>(layers: Layers) {
   return (state: TState | undefined, action: AnyAction) => {
     if (state === undefined) {
-      return buildInitialState(layers);
+      return buildInitialState(layers.flat());
     }
 
     let newState: TState = state;

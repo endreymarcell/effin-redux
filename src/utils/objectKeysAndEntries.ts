@@ -16,20 +16,16 @@
  * See also: https://github.com/Microsoft/TypeScript/issues/12870
  */
 
-export function typedObjectKeys<Object extends { [key: string | number | symbol]: any } | null>(
-  object: Object,
-): Array<keyof Object> {
+export function typedObjectKeys<Object extends { [key: string | number | symbol]: any } | null>(object: Object) {
   return !!object ? (Object.keys(object) as Array<keyof Object>) : [];
 }
 
-export function typedObjectEntries<Object extends { [key: string | number | symbol]: any } | null>(
-  object: Object,
-): Array<[keyof Object, any]> {
-  return !!object ? (Object.entries(object) as Array<[keyof Object, any]>) : [];
+export function typedObjectEntries<Object extends { [key: string | number | symbol]: any } | null>(object: Object) {
+  return !!object ? (Object.entries(object) as keyof Object extends never ? [] : Array<[keyof Object, any]>) : [];
 }
 
 export function typedObjectFromEntries<Keys extends string>(
-  entries: Array<[key: Keys, value: any]>,
+  entries: ReadonlyArray<[key: Keys, value: any]>,
 ): Record<Keys, any> {
   return Object.fromEntries(entries) as Record<Keys, any>;
 }

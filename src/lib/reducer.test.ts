@@ -14,7 +14,7 @@ type ExpectedAppState = {
 describe("buildInitialState", () => {
   test("combine + layer", () => {
     const layers = [[counterSlice, infoSlice], [fizzBuzzSlice]];
-    const initialState = buildInitialState(layers);
+    const initialState = buildInitialState(layers.flat());
 
     expectTypeOf(initialState).toMatchTypeOf<ExpectedAppState>();
     expect(initialState).toMatchObject({
