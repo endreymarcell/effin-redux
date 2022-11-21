@@ -24,8 +24,14 @@ export function typedObjectEntries<Object extends { [key: string | number | symb
   return !!object ? (Object.entries(object) as keyof Object extends never ? [] : Array<[keyof Object, any]>) : [];
 }
 
-export function typedObjectFromEntries<Keys extends string>(
-  entries: ReadonlyArray<[key: Keys, value: any]>,
-): Record<Keys, any> {
-  return Object.fromEntries(entries) as Record<Keys, any>;
+export function typedObjectFromEntries<Entries extends readonly any[]>(entries: Entries) {
+  type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
+  type DeepWriteable<T> = { -readonly [P in keyof T]: DeepWriteable<T[P]> };
+  type Cast<X, Y> = X extends Y ? X : Y;
+  type FromEntries<T> = T extends [infer Key, any][]
+    ? { [K in Cast<Key, string>]: Extract<ArrayElement<T>, [K, any]>[1] }
+    : { [key in string]: any };
+  type FromEntriesWithReadOnly<T> = FromEntries<DeepWriteable<T>>;
+
+  return Object.fromEntries(entries) as FromEntriesWithReadOnly<Entries>;
 }

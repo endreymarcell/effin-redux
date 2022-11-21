@@ -17,6 +17,10 @@ describe("buildInitialState", () => {
     const initialState = buildInitialState(layers.flat());
 
     expectTypeOf(initialState).toMatchTypeOf<ExpectedAppState>();
+    expectTypeOf(initialState.counter).toMatchTypeOf<CounterState>();
+    expectTypeOf(initialState.info).toMatchTypeOf<InfoState>();
+    expectTypeOf(initialState.fizzBuzz).toMatchTypeOf<FizzBuzzState>();
+
     expect(initialState).toMatchObject({
       counter: counterSlice.getInitialState(),
       info: infoSlice.getInitialState(),
