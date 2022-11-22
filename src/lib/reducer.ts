@@ -4,11 +4,21 @@ import { Slice } from "@reduxjs/toolkit";
 
 type Layers = Slice[][];
 
-export function buildInitialState<TSlices extends Slice[]>(slices: TSlices) {
-  type SliceNames = typeof slices[number]["name"];
-  const allInitialStates: ReadonlyArray<[key: SliceNames, value: any]> = slices.map(
-    (slice) => [slice.name, slice.getInitialState()] as const,
-  );
+type Tuple1<T> = [T];
+type Tuple2<T> = [T, T];
+type Tuple3<T> = [T, T, T];
+type Tuple4<T> = [T, T, T, T];
+type Tuple5<T> = [T, T, T, T, T];
+type Tuple<T> = Tuple1<T> | Tuple2<T> | Tuple3<T> | Tuple4<T> | Tuple5<T>;
+
+type SliceEntry<TSlice> = TSlice extends Slice<infer TState, infer TReducers, infer TName> ? [TName, TState] : never;
+
+function getEntryForSlice<TState, TName extends string>(slice: Slice<TState, any, TName>): [TName, TState] {
+  return [slice.name, slice.getInitialState()];
+}
+
+export function buildInitialState<TSlices extends Tuple<Slice>>(slices: TSlices) {
+  const allInitialStates = slices.map(getEntryForSlice);
   const result = typedObjectFromEntries(allInitialStates);
   return result;
 }
