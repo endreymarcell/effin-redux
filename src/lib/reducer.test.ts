@@ -13,29 +13,21 @@ type ExpectedAppState = {
   fizzBuzz: FizzBuzzState;
 };
 
-function getEntryForSlice<TName extends string, TState>(slice: Slice<TState, any, TName>): [TName, TState] {
-  return [slice.name, slice.getInitialState()];
-}
+type SliceToNameAndState<TSlice> = TSlice extends Slice<infer TState, any, infer TName> ? [TName, TState] : never;
 
-type SliceToEntry<TSlice> = TSlice extends Slice<infer TState, any, infer TName> ? [TName, TState] : never;
-
-function sliceToNameAndInitialState<
-  TTuple extends Readonly<Slice[]>,
-  TMapper extends (slice: Slice) => [unknown, unknown],
->(
-  tuple: Readonly<TTuple>,
-  mapper: TMapper,
+function slicesToNameAndStatePairs<TSlices extends Readonly<Slice[]>>(
+  slices: Readonly<TSlices>,
 ): {
-  [Index in keyof TTuple]: Readonly<SliceToEntry<TTuple[Index]>>;
+  [Index in keyof TSlices]: Readonly<SliceToNameAndState<TSlices[Index]>>;
 } {
-  return tuple.map(mapper as any) as any;
+  return slices.map((slice: Slice) => [slice.name, slice.getInitialState]) as any;
 }
 
 describe("buildInitialState", () => {
   test("combine + layer", () => {
     const layers = [[counterSlice, infoSlice], [fizzBuzzSlice]] as const;
     const slices = typedFlatten(layers);
-    const allInitialStates = sliceToNameAndInitialState(slices, getEntryForSlice);
+    const allInitialStates = slicesToNameAndStatePairs(slices);
     const initialState = typedObjectFromEntries(allInitialStates);
 
     expectTypeOf(initialState).toMatchTypeOf<ExpectedAppState>();
