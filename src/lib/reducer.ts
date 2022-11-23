@@ -2,6 +2,7 @@ import { AnyAction, combineReducers } from "redux";
 import { typedObjectFromEntries } from "../utils";
 import { Slice } from "@reduxjs/toolkit";
 import { typedFlatten } from "../utils/arrays";
+import { myCombineReducers } from "./combineReducers";
 
 type SliceToNameAndState<TSlice> = TSlice extends Slice<infer TState, any, infer TName> ? [TName, TState] : never;
 
@@ -32,7 +33,7 @@ export function buildReducerMatrix<TState extends {}>(layers: ReadonlyArray<Read
     layers.forEach((layer) => {
       const layerEntries = layer.map((slice) => [slice.name, slice.reducer]);
       const layerReducers = typedObjectFromEntries(layerEntries);
-      const layerCombinedReducer = combineReducers(layerReducers);
+      const layerCombinedReducer = myCombineReducers(layerReducers, newState);
       const layerState = layerCombinedReducer(newState, action);
       newState = {
         ...newState,
