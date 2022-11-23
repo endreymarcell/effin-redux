@@ -17,19 +17,17 @@ function getEntryForSlice<TName extends string, TState>(slice: Slice<TState, any
   return [slice.name, slice.getInitialState()];
 }
 
-type SliceToEntry<TSlice> = TSlice extends Slice<infer TState, any, infer TName> ? [TName, TSlice] : never;
+type SliceToEntry<TSlice> = TSlice extends Slice<infer TState, any, infer TName> ? [TName, TState] : never;
 
-function mapOverTuple<
+function sliceToNameAndInitialState<
   TTuple extends Readonly<Slice[]>,
-  TName extends string,
-  TState,
-  TMapper extends (slice: Slice<TState, any, TName>) => [TName, TState],
+  TMapper extends (slice: Slice) => [unknown, unknown],
 >(
   tuple: Readonly<TTuple>,
   mapper: TMapper,
 ): {
-  [Index in keyof TTuple]: SliceToEntry<TTuple[Index]>;
-} & { length: TTuple["length"] } {
+  [Index in keyof TTuple]: Readonly<SliceToEntry<TTuple[Index]>>;
+} {
   return tuple.map(mapper as any) as any;
 }
 
@@ -37,7 +35,7 @@ describe("buildInitialState", () => {
   test("combine + layer", () => {
     const layers = [[counterSlice, infoSlice], [fizzBuzzSlice]] as const;
     const slices = typedFlatten(layers);
-    const allInitialStates = mapOverTuple(slices, getEntryForSlice);
+    const allInitialStates = sliceToNameAndInitialState(slices, getEntryForSlice);
     const initialState = typedObjectFromEntries(allInitialStates);
 
     expectTypeOf(initialState).toMatchTypeOf<ExpectedAppState>();
