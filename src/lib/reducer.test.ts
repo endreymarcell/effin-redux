@@ -19,17 +19,18 @@ function getEntryForSlice<TName extends string, TState>(slice: Slice<TState, any
 
 type SliceToEntry<TSlice> = TSlice extends Slice<infer TState, any, infer TName> ? [TName, TSlice] : never;
 
-type SlicesToEntries<Tuple extends [...any[]]> = {
-  [Index in keyof Tuple]: SliceToEntry<Tuple[Index]>;
-} & { length: Tuple["length"] };
-
-function mapOverTuple<TTuple extends [...any[]], TMapper extends (arg: any) => unknown>(
+function mapOverTuple<
+  TTuple extends Readonly<Slice[]>,
+  TName extends string,
+  TState,
+  TMapper extends (slice: Slice<TState, any, TName>) => [TName, TState],
+>(
   tuple: Readonly<TTuple>,
   mapper: TMapper,
 ): {
   [Index in keyof TTuple]: SliceToEntry<TTuple[Index]>;
 } & { length: TTuple["length"] } {
-  return tuple.map(mapper) as any;
+  return tuple.map(mapper as any) as any;
 }
 
 describe("buildInitialState", () => {
