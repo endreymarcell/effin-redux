@@ -3,9 +3,7 @@ import { buildInitialState, buildReducerMatrix } from "./reducer";
 import { counterSlice, CounterState } from "../app/slices/counter";
 import { infoSlice, InfoState } from "../app/slices/info";
 import { fizzBuzzSlice, FizzBuzzState } from "../app/slices/fizzBuzz";
-import { configureStore, Slice } from "@reduxjs/toolkit";
-import { typedObjectFromEntries } from "../utils";
-import { typedFlatten } from "../utils/arrays";
+import { configureStore } from "@reduxjs/toolkit";
 
 type ExpectedAppState = {
   counter: CounterState;
@@ -13,22 +11,10 @@ type ExpectedAppState = {
   fizzBuzz: FizzBuzzState;
 };
 
-type SliceToNameAndState<TSlice> = TSlice extends Slice<infer TState, any, infer TName> ? [TName, TState] : never;
-
-function slicesToNameAndStatePairs<TSlices extends Readonly<Slice[]>>(
-  slices: Readonly<TSlices>,
-): {
-  [Index in keyof TSlices]: Readonly<SliceToNameAndState<TSlices[Index]>>;
-} {
-  return slices.map((slice: Slice) => [slice.name, slice.getInitialState]) as any;
-}
-
 describe("buildInitialState", () => {
   test("combine + layer", () => {
     const layers = [[counterSlice, infoSlice], [fizzBuzzSlice]] as const;
-    const slices = typedFlatten(layers);
-    const allInitialStates = slicesToNameAndStatePairs(slices);
-    const initialState = typedObjectFromEntries(allInitialStates);
+    const initialState = buildInitialState<ExpectedAppState>(layers);
 
     expectTypeOf(initialState).toMatchTypeOf<ExpectedAppState>();
     expectTypeOf(initialState.counter).not.toBeAny();
@@ -48,7 +34,7 @@ describe("buildInitialState", () => {
 
 describe("buildReducerMatrix", () => {
   test("combine + layer", () => {
-    const matrix = buildReducerMatrix([[counterSlice, infoSlice], [fizzBuzzSlice]]);
+    const matrix = buildReducerMatrix<ExpectedAppState>([[counterSlice, infoSlice], [fizzBuzzSlice]]);
     const store = configureStore({ reducer: matrix });
 
     expectTypeOf(store.getState()).not.toBeUnknown();
@@ -61,7 +47,7 @@ describe("buildReducerMatrix", () => {
     store.dispatch(counterSlice.actions.increaseCountClicked());
     expect(store.getState().counter.count).toBe(1);
 
-    const error = "I can't get no";
+    const error = "No, this is Patrick!";
     store.dispatch(infoSlice.actions.gotBadNews({ error }));
     expect(store.getState().info.appStatus).toMatchObject({ type: "bad", error });
   });

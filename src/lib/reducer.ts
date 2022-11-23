@@ -1,32 +1,31 @@
 import { AnyAction, combineReducers } from "redux";
 import { typedObjectFromEntries } from "../utils";
 import { Slice } from "@reduxjs/toolkit";
+import { typedFlatten } from "../utils/arrays";
 
-type Layers = Slice[][];
+type SliceToNameAndState<TSlice> = TSlice extends Slice<infer TState, any, infer TName> ? [TName, TState] : never;
 
-type Tuple1<T> = [T];
-type Tuple2<T> = [T, T];
-type Tuple3<T> = [T, T, T];
-type Tuple4<T> = [T, T, T, T];
-type Tuple5<T> = [T, T, T, T, T];
-type Tuple<T> = Tuple1<T> | Tuple2<T> | Tuple3<T> | Tuple4<T> | Tuple5<T>;
-
-type SliceEntry<TSlice> = TSlice extends Slice<infer TState, infer TReducers, infer TName> ? [TName, TState] : never;
-
-function getEntryForSlice<TState, TName extends string>(slice: Slice<TState, any, TName>): [TName, TState] {
-  return [slice.name, slice.getInitialState()];
+export function slicesToNameAndStatePairs<TSlices extends Readonly<Slice[]>>(
+  slices: Readonly<TSlices>,
+): {
+  [Index in keyof TSlices]: Readonly<SliceToNameAndState<TSlices[Index]>>;
+} {
+  return slices.map((slice: Slice) => [slice.name, slice.getInitialState()]) as any;
 }
 
-export function buildInitialState<TSlices extends Tuple<Slice>>(slices: TSlices) {
-  const allInitialStates = slices.map(getEntryForSlice);
-  const result = typedObjectFromEntries(allInitialStates);
-  return result;
+// TODO make type inference work properly rather than forcing a type assertion
+export function buildInitialState<AppState extends {}>(layers: ReadonlyArray<unknown>): AppState {
+  const slices = typedFlatten(layers);
+  const allInitialStates = slicesToNameAndStatePairs(slices);
+  const initialState = typedObjectFromEntries(allInitialStates);
+  return initialState as AppState;
 }
 
-export function buildReducerMatrix<TState>(layers: Layers) {
+// TODO make it work without passing the TState type parameter
+export function buildReducerMatrix<TState extends {}>(layers: ReadonlyArray<ReadonlyArray<Slice>>) {
   return (state: TState | undefined, action: AnyAction): TState => {
     if (state === undefined) {
-      return buildInitialState(layers.flat()) as TState;
+      return buildInitialState(layers) as TState;
     }
 
     let newState: TState = state;
