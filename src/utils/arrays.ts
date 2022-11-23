@@ -16,6 +16,7 @@ export type Flatten<Arr extends ReadonlyArray<unknown>, Result extends ReadonlyA
 
 export const typedFlatten = <Elem, T extends ReadonlyArray<T | Elem>>(arr: readonly [...T]): Flatten<T> =>
   arr.reduce(
-    (acc, elem) => (Array.isArray(elem) ? (typedFlatten(elem) as Flatten<T>) : ([...acc, elem] as Flatten<T>)),
+    (acc, elem) =>
+      Array.isArray(elem) ? ([...acc, ...typedFlatten(elem)] as Flatten<T>) : ([...acc, elem] as Flatten<T>),
     [] as Flatten<T>,
   );
