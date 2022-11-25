@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { createAppStore } from "./index";
+import { createAppStore } from "./app";
 import { counterSlice } from "./slices/counter";
 import { infoSlice } from "./slices/info";
 

@@ -1,6 +1,6 @@
 import { describe, test, expect } from "vitest";
-import { createAppStore } from "./index";
-import { counterSlice } from "./slices/counter";
+import { createAppStore } from "../app";
+import { counterSlice } from "./counter";
 
 describe("counter slice", () => {
   test("actions work as expected", () => {

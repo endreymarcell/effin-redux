@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { counterSlice } from "./counter";
-import { AppState } from "../index";
+import { AppState } from "../app";
 
 type FizzBuzzValue = null | "fizz" | "buzz" | "fizzbuzz";
 
