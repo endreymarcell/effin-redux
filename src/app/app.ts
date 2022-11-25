@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { buildReducerMatrix } from "$lib";
+import { buildReducerMatrix, setStoreForScheduledEffects, withEffects } from "$lib";
 
 import { counterSlice } from "./slices/counter";
 import { infoSlice } from "./slices/info";
@@ -16,7 +16,11 @@ const sliceLayers = [[counterSlice, infoSlice], [fizzBuzzSlice]] as const;
 const appReducer = buildReducerMatrix<AppState>(sliceLayers);
 
 export function createAppStore() {
-  return configureStore({
-    reducer: appReducer,
+  // TODO type param should not be necessary
+  const store = configureStore<AppState>({
+    reducer: withEffects(appReducer),
   });
+  // TODO to be fair, this is also pretty bad
+  setStoreForScheduledEffects(store);
+  return store;
 }

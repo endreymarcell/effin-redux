@@ -45,3 +45,18 @@ describe("app with nested slices", () => {
     expect(store.getState().fizzBuzz.value).toBe("buzz");
   });
 });
+
+describe("app with side effects", () => {
+  test("success", async () => {
+    const store = createAppStore();
+    expect(store.getState().counter.count).toBe(0);
+
+    store.dispatch(counterSlice.actions.externalNumberRequested());
+    await new Promise(process.nextTick);
+    expect(store.getState().counter.count).toBe(99);
+
+    store.dispatch(counterSlice.actions.specificNumberRequested({ requestedNumber: 88 }));
+    await new Promise(process.nextTick);
+    expect(store.getState().counter.count).toBe(88);
+  });
+});
