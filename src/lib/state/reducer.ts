@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
-import { typedObjectFromEntries } from "../utils";
+import { typedObjectFromEntries } from "../../utils";
 import { Slice } from "@reduxjs/toolkit";
-import { typedFlatten } from "../utils/arrays";
+import { typedFlatten } from "../../utils/arrays";
 import { myCombineReducers } from "./combineReducers";
 
 type SliceToNameAndState<TSlice> = TSlice extends Slice<infer TState, any, infer TName> ? [TName, TState] : never;

@@ -6,6 +6,10 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true
+    "strict": true,
+    "paths": {
+      "$lib": ["./src/lib"],
+      "$utils": ["./src/utils"]
+    }
   }
 }
