@@ -2,7 +2,7 @@ import { Reducer } from "@reduxjs/toolkit";
 import { AnyAction } from "redux";
 
 export const myCombineReducers = <AppState extends {}>(reducers: Record<string, Reducer>, appState: AppState) => {
-  return (state = {}, action: AnyAction) => {
+  return (state: AppState, action: AnyAction): AppState => {
     return Object.keys(reducers).reduce((nextState, key) => {
       // @ts-ignore
       nextState[key] = reducers[key](
@@ -14,6 +14,6 @@ export const myCombineReducers = <AppState extends {}>(reducers: Record<string, 
         action,
       );
       return nextState;
-    }, {});
+    }, {} as AppState);
   };
 };
