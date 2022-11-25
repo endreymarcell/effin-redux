@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "test": "npm run test:func -- run && npm run test:type",
     "test:type": "tsc --noEmit",
     "test:func": "vitest"
   },
