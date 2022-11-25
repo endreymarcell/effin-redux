@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createReducers } from "$lib";
 
 export type CounterState = {
   count: number;
@@ -13,7 +14,7 @@ const initialState: CounterState = {
 export const counterSlice = createSlice({
   name: "counter",
   initialState,
-  reducers: {
+  reducers: createReducers<CounterState>({
     startCountingClicked: (state) => {
       state.isCounting = true;
     },
@@ -28,5 +29,5 @@ export const counterSlice = createSlice({
     resetCountClicked: (state) => {
       state.count = initialState.count;
     },
-  },
+  }),
 });

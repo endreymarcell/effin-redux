@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createReducers } from "$lib";
 
 type GoodStatus = {
   type: "good";
@@ -22,7 +23,7 @@ const initialState: InfoState = {
 export const infoSlice = createSlice({
   name: "info",
   initialState,
-  reducers: {
+  reducers: createReducers<InfoState>({
     gotGoodNews: (state) => {
       state.appStatus = {
         type: "good",
@@ -34,5 +35,5 @@ export const infoSlice = createSlice({
         error: action.payload.error,
       };
     },
-  },
+  }),
 });

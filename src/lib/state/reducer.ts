@@ -1,8 +1,15 @@
 import { AnyAction } from "redux";
-import { typedObjectFromEntries } from "../../utils";
-import { Slice } from "@reduxjs/toolkit";
-import { typedFlatten } from "../../utils/arrays";
+import { PayloadAction, Slice } from "@reduxjs/toolkit";
+import { typedObjectFromEntries } from "$utils";
+import { typedFlatten } from "$utils";
 import { myCombineReducers } from "./combineReducers";
+import { StateWithEffects } from "../effects/withEffects";
+
+type ReducersForState<State> = Record<string, (state: StateWithEffects<State>, action: PayloadAction<any>) => void>;
+
+export function createReducers<State extends {}>(reducers: ReducersForState<State>) {
+  return reducers;
+}
 
 type SliceToNameAndState<TSlice> = TSlice extends Slice<infer TState, any, infer TName> ? [TName, TState] : never;
 
