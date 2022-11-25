@@ -23,7 +23,7 @@ const initialState: InfoState = {
 export const infoSlice = createSlice({
   name: "info",
   initialState,
-  reducers: createReducers<InfoState>({
+  reducers: createReducers<InfoState>()({
     gotGoodNews: (state) => {
       state.appStatus = {
         type: "good",

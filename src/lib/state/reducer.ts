@@ -7,16 +7,16 @@ import { StateWithEffects } from "../effects/withEffects";
 
 type ReducersForState<State> = Record<string, (state: StateWithEffects<State>, action: PayloadAction<any>) => void>;
 
-export function createReducers<State extends {}>(reducers: ReducersForState<State>) {
-  return reducers;
+export function createReducers<State extends {}>() {
+  return function inner<Reducers extends ReducersForState<State>>(reducers: Reducers) {
+    return reducers;
+  };
 }
 
-export type StateWithAppState<State, AppState> = State & { $$appState: AppState };
-
-export function createExtraReducers<State extends {}, AppState extends {}>(
-  foo: (builder: ActionReducerMapBuilder<StateWithAppState<State, AppState>>) => void,
+export function createExtraReducers<State extends {}>(
+  extraReducers: (builder: ActionReducerMapBuilder<State>) => void,
 ) {
-  return foo;
+  return extraReducers;
 }
 
 type SliceToNameAndState<TSlice> = TSlice extends Slice<infer TState, any, infer TName> ? [TName, TState] : never;

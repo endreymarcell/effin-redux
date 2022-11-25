@@ -14,7 +14,7 @@ const initialState: CounterState = {
 export const counterSlice = createSlice({
   name: "counter",
   initialState,
-  reducers: createReducers<CounterState>({
+  reducers: createReducers<CounterState>()({
     startCountingClicked: (state) => {
       state.isCounting = true;
     },

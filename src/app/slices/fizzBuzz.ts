@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { counterSlice } from "./counter";
-import { AppState } from "../app";
-import { createExtraReducers } from "../../lib/state/reducer";
+import { createExtraReducers } from "$lib";
 
 type FizzBuzzValue = null | "fizz" | "buzz" | "fizzbuzz";
 
@@ -13,17 +12,13 @@ const initialState: FizzBuzzState = {
   value: null,
 };
 
-type HasAppState = {
-  $$appState: AppState;
-};
-
 export const fizzBuzzSlice = createSlice({
   name: "fizzBuzz",
   initialState,
   reducers: {},
   extraReducers: createExtraReducers((builder) => {
     builder.addCase(counterSlice.actions.increaseCountClicked, (state) => {
-      const currentNumber = state.$$appState.counter.count;
+      const currentNumber = (state as any).$$appState.counter.count;
       state.value = calculateFizzBuzz(currentNumber);
     });
   }),
