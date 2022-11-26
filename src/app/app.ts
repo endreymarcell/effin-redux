@@ -15,6 +15,10 @@ export type AppState = {
 const sliceLayers = [[counterSlice, infoSlice], [fizzBuzzSlice]] as const;
 const appReducer = buildReducerMatrix<AppState>(sliceLayers);
 
+export function readAppState(state: any): AppState {
+  return state.$$appState;
+}
+
 export function createAppStore() {
   // TODO type param should not be necessary
   const store = configureStore<AppState>({
