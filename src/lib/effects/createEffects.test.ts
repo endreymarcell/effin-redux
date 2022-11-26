@@ -9,16 +9,18 @@ describe("createEffects", () => {
     const effects = createEffects(inputs, forSlice("test"));
 
     type FetchCount = typeof effects.fetchCount;
+    type FetchCountArgs = Parameters<FetchCount>;
+    type FetchTypeReturns = ReturnType<FetchCount>;
 
     expectTypeOf<FetchCount>().not.toBeAny();
     expectTypeOf<FetchCount>().toBeFunction();
 
-    expectTypeOf<Parameters<FetchCount>>().not.toBeAny();
-    expectTypeOf<Parameters<FetchCount>>().toMatchTypeOf();
+    expectTypeOf<FetchCountArgs>().not.toBeAny();
+    expectTypeOf<FetchCountArgs>().toMatchTypeOf();
 
-    expectTypeOf<ReturnType<FetchCount>>().not.toBeAny();
-    expectTypeOf<ReturnType<FetchCount>["args"]>().not.toBeAny();
-    expectTypeOf<ReturnType<FetchCount>>().toMatchTypeOf<{ sliceName: string; effectName: string; args: any }>();
+    expectTypeOf<FetchTypeReturns>().not.toBeAny();
+    expectTypeOf<FetchTypeReturns["args"]>().not.toBeAny();
+    expectTypeOf<FetchTypeReturns>().toMatchTypeOf<{ sliceName: string; effectName: string; args: any }>();
 
     expect(effects.fetchCount).toMatchObject({
       sliceName: "test",
@@ -34,7 +36,9 @@ describe("createEffects", () => {
     const effects = createEffects(inputs, forSlice("test"));
 
     type SetNumber = typeof effects.setNumber;
-    type FirstParamOfSetNumber = Parameters<SetNumber>[0];
+    type SetNumberArgs = Parameters<SetNumber>;
+    type FirstParamOfSetNumber = SetNumberArgs[0];
+    type SetNumberReturns = ReturnType<SetNumber>;
 
     expectTypeOf<SetNumber>().not.toBeAny();
     expectTypeOf<SetNumber>().toBeFunction();
@@ -42,9 +46,9 @@ describe("createEffects", () => {
     expectTypeOf<FirstParamOfSetNumber>().not.toBeAny();
     expectTypeOf<FirstParamOfSetNumber>().toMatchTypeOf<{ whichNumber: number } | undefined>(); // TODO no undefined
 
-    expectTypeOf<ReturnType<SetNumber>>().not.toBeAny();
-    expectTypeOf<ReturnType<SetNumber>["args"]>().not.toBeAny();
-    expectTypeOf<ReturnType<SetNumber>>().toMatchTypeOf<{
+    expectTypeOf<SetNumberReturns>().not.toBeAny();
+    expectTypeOf<SetNumberReturns["args"]>().not.toBeAny();
+    expectTypeOf<SetNumberReturns>().toMatchTypeOf<{
       sliceName: string;
       effectName: string;
       args: { whichNumber: number };
