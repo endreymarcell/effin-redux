@@ -30,10 +30,10 @@ function createEffect<EffectArgs extends object, EffectReturn>(
   const returnValue = function (...args: any[]) {
     // @ts-ignore
     if (this === undefined) {
-      console.log(`this is undefined, returning thunk`);
+      // Effect is being called from the effect executor internals, we need the actual thunk
       return simpleThunk(args as any);
     } else {
-      console.log(`this is defuned, returning serialized effect`);
+      // Effect is being called by us in the reducer, we need the serialized version
       return serializer(...args);
     }
   };
