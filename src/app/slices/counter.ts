@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createExtraReducers, createReducers } from "$lib";
-import { createEffectInputs, createEffects, forSlice } from "../../lib/effects/prepareEffects";
+import { createEffectInputs, createEffects, forSlice } from "../../lib/effects/createEffects";
 
 export type CounterState = {
   count: number;

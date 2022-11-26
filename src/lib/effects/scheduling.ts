@@ -4,7 +4,7 @@ import { AnyAction, Store } from "redux";
 import { nanoid, Reducer } from "@reduxjs/toolkit";
 
 import { GenericAppStateWithEffects, SerializedEffect } from "./withEffects";
-import { EffectIdentifier, thunkLookupTable } from "./prepareEffects";
+import { EffectIdentifier, thunkLookupTable } from "./createEffects";
 import { typedObjectKeys } from "$utils";
 
 type ScheduledEffect = {
