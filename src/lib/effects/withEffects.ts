@@ -1,4 +1,4 @@
-import { Reducer } from "@reduxjs/toolkit";
+import { AsyncThunk, AsyncThunkAction, Reducer } from "@reduxjs/toolkit";
 
 import { effectRemoverReducer, effectSchedulerReducer } from "./scheduling";
 
@@ -8,9 +8,13 @@ export type SerializedEffect<Args extends any[]> = {
   args: Args;
 };
 
+export type SerializedEffectWithThunkOverload<Args extends any[]> =
+  | SerializedEffect<Args>
+  | AsyncThunkAction<any, any, any>;
+
 // Helper type for describing a slice's state
 export type StateWithEffects<State> = State & {
-  $$effects?: SerializedEffect<any>[];
+  $$effects?: SerializedEffectWithThunkOverload<any>[];
 };
 
 // Helper type for describing the entire app's state so that its slices have effects
