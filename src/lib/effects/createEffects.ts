@@ -27,14 +27,14 @@ function createEffect<EffectArgs extends object, EffectReturn>(
 
   const serializer = (args?: EffectArgs) => ({ sliceName, effectName, args });
 
-  const returnValue = function (...args: any[]) {
+  const returnValue = function (args: EffectArgs) {
     // @ts-ignore
     if (this === undefined) {
       // Effect is being called from the effect executor internals, we need the actual thunk
-      return simpleThunk(args as any);
+      return simpleThunk(args);
     } else {
       // Effect is being called by us in the reducer, we need the serialized version
-      return serializer(...args);
+      return serializer(args);
     }
   };
 
@@ -61,8 +61,8 @@ export const createEffects = <Inputs extends AllEffectCreators<any>>(
   mapper: ReturnType<typeof forSlice>,
 ): {
   [Key in keyof Inputs]: AsyncThunk<any, any, any> &
-    ((arg?: FirstArgumentOf<Inputs[Key]>) => { sliceName: string; effectName: string; args: any });
-} => mapValues<Inputs, any>(inputs as any, mapper) as any;
+    ((arg?: FirstArgumentOf<Inputs[Key]>) => { sliceName: string; effectName: string; args: Parameters<Inputs[Key]> });
+} => mapValues<Inputs, typeof forSlice>(inputs as any, mapper as any) as any;
 
 // Returns 'createEffect' with the sliceName argument fixed so you don't have to keep passing it
 export function forSlice(sliceName: string) {

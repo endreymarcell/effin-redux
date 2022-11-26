@@ -22,14 +22,17 @@ describe("createEffects", () => {
     expectTypeOf<FetchTypeReturns["args"]>().not.toBeAny();
     expectTypeOf<FetchTypeReturns>().toMatchTypeOf<{ sliceName: string; effectName: string; args: any }>();
 
-    expect(effects.fetchCount).toMatchObject({
+    // @ts-expect-error
+    effects.fetchCount("unexpected-argument");
+
+    expect(effects.fetchCount()).toMatchObject({
       sliceName: "test",
       effectName: "fetchCount",
       args: undefined,
     });
   });
 
-  test.only("effect with argument", () => {
+  test("effect with argument", () => {
     const inputs = createEffectInputs<{}>()({
       setNumber: async ({ whichNumber }: { whichNumber: number }) => whichNumber,
     });
@@ -53,6 +56,12 @@ describe("createEffects", () => {
       effectName: string;
       args: { whichNumber: number };
     }>();
+
+    // @ts-expect-error
+    effects.setNumber();
+
+    // @ts-expect-error
+    effects.setNumber({ areTheseTheDroidsYouAreLookingFor: false });
 
     expect(effects.setNumber({ whichNumber: 88 })).toMatchObject({
       sliceName: "test",
