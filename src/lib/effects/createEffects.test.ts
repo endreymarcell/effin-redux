@@ -10,7 +10,7 @@ describe("createEffects", () => {
 
     type FetchCount = typeof effects.fetchCount;
     type FetchCountArgs = Parameters<FetchCount>;
-    type FetchTypeReturns = ReturnType<FetchCount>;
+    type FetchCountReturns = ReturnType<FetchCount>;
 
     expectTypeOf<FetchCount>().not.toBeAny();
     expectTypeOf<FetchCount>().toBeFunction();
@@ -18,9 +18,9 @@ describe("createEffects", () => {
     expectTypeOf<FetchCountArgs>().not.toBeAny();
     expectTypeOf<FetchCountArgs>().toMatchTypeOf();
 
-    expectTypeOf<FetchTypeReturns>().not.toBeAny();
-    expectTypeOf<FetchTypeReturns["args"]>().not.toBeAny();
-    expectTypeOf<FetchTypeReturns>().toMatchTypeOf<{ sliceName: string; effectName: string; args: any }>();
+    expectTypeOf<FetchCountReturns>().not.toBeAny();
+    expectTypeOf<FetchCountReturns["args"]>().not.toBeAny();
+    expectTypeOf<FetchCountReturns>().toMatchTypeOf<{ sliceName: string; effectName: string; args: any }>();
 
     // @ts-expect-error
     effects.fetchCount("unexpected-argument");
