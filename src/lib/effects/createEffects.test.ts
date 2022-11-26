@@ -17,11 +17,14 @@ describe("createEffects", () => {
     expectTypeOf<Parameters<FetchCount>>().toMatchTypeOf();
 
     expectTypeOf<ReturnType<FetchCount>>().not.toBeAny();
-    expectTypeOf<ReturnType<FetchCount>>().toMatchTypeOf<Promise<number>>();
+    expectTypeOf<ReturnType<FetchCount>["args"]>().not.toBeAny();
+    expectTypeOf<ReturnType<FetchCount>>().toMatchTypeOf<{ sliceName: string; effectName: string; args: any }>();
 
-    expectTypeOf<FetchCount>().toMatchTypeOf<() => Promise<number>>();
-
-    expect(effects.fetchCount.run()).toMatchObject({ sliceName: "test", effectName: "fetchCount", args: undefined });
+    expect(effects.fetchCount.run()).toMatchObject({
+      sliceName: "test",
+      effectName: "fetchCount",
+      args: undefined,
+    });
   });
 
   test("effect with argument", () => {
@@ -40,9 +43,13 @@ describe("createEffects", () => {
     expectTypeOf<FirstParamOfSetNumber>().toMatchTypeOf<{ whichNumber: number } | undefined>(); // TODO no undefined
 
     expectTypeOf<ReturnType<SetNumber>>().not.toBeAny();
-    expectTypeOf<ReturnType<SetNumber>>().toMatchTypeOf<Promise<number>>();
+    expectTypeOf<ReturnType<SetNumber>["args"]>().not.toBeAny();
+    expectTypeOf<ReturnType<SetNumber>>().toMatchTypeOf<{
+      sliceName: string;
+      effectName: string;
+      args: { whichNumber: number };
+    }>();
 
-    expectTypeOf<SetNumber>().toMatchTypeOf<() => Promise<number>>();
     expect(effects.setNumber.run()).toMatchObject({ sliceName: "test", effectName: "setNumber", args: undefined });
   });
 });

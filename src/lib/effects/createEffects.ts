@@ -51,7 +51,7 @@ export const createEffects = <Inputs extends AllEffectCreators<any>>(
   mapper: ReturnType<typeof forSlice>,
 ): {
   [Key in keyof Inputs]: AsyncThunk<any, any, any> & {
-    run: (arg?: FirstArgumentOf<Inputs[Key]>) => ReturnType<Inputs[Key]>;
+    run: (arg?: FirstArgumentOf<Inputs[Key]>) => { sliceName: string; effectName: string; args: any };
   };
 } => mapValues<Inputs, any>(inputs as any, mapper) as any;
 
