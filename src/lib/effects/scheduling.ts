@@ -4,15 +4,15 @@ import { AnyAction, Store } from "redux";
 import { nanoid, Reducer } from "@reduxjs/toolkit";
 
 import { GenericAppStateWithEffects, SerializedEffect } from "./withEffects";
-import { EffectIdentifier, thunkLookupTable } from "./createEffects";
+import { EffectIdentifier, thunkLookupTable } from "./thunkLookupTable";
 import { typedObjectKeys } from "$utils";
 
 type ScheduledEffect = {
   instanceId: string;
-  serializedEffect: SerializedEffect<any>;
+  serializedEffect: SerializedEffect<any, any, any>;
 };
 
-export type SerializedEffectInstance<T extends any[]> = SerializedEffect<T> & { instanceId: string };
+export type SerializedEffectInstance<T extends any[]> = SerializedEffect<any, any, T> & { instanceId: string };
 
 let scheduledEffects: ScheduledEffect[] = [];
 let storeForScheduledEffects: Store | undefined = undefined;
@@ -59,7 +59,7 @@ export const effectSchedulerReducer: Reducer = <State extends GenericAppStateWit
 /**
  * Take the serialized form of an effect, schedule it for execution, and execute when idle.
  */
-function scheduleEffect(instanceId: string, serializedEffect: SerializedEffect<any>) {
+function scheduleEffect(instanceId: string, serializedEffect: SerializedEffect<any, any, any>) {
   // Have to clone serializedEffect because it's a proxy coming from Immer that might be revoked in the meantime
   scheduledEffects.push({ instanceId, serializedEffect: cloneDeep(serializedEffect) });
 

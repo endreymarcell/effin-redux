@@ -6,9 +6,9 @@ import { EffectIdentifier, thunkLookupTable } from "./thunkLookupTable";
 
 type EffectFunction<EffectArgs extends object, EffectReturn> = (args?: EffectArgs) => Promise<EffectReturn>;
 
-function createEffect<EffectArgs extends object, EffectReturn>(
-  sliceName: string,
-  effectName: string,
+function createEffect<SliceName extends string, EffectName extends string, EffectArgs extends object, EffectReturn>(
+  sliceName: SliceName,
+  effectName: EffectName,
   effectFunction: EffectFunction<EffectArgs, EffectReturn>,
 ) {
   const effectIdentifier: EffectIdentifier = `${sliceName}/${effectName}`;
@@ -46,18 +46,18 @@ export const createEffectInputs =
 
 type FirstArgumentOf<T> = T extends (firstArgument: infer U) => any ? U : never;
 
-export const createEffects = <Inputs extends AllEffectCreators<any>>(
+export const createEffects = <State extends object, Inputs extends AllEffectCreators<State>>(
   inputs: Inputs,
   mapper: ReturnType<typeof forSlice>,
 ): {
-  [Key in keyof Inputs]: AsyncThunk<any, any, any> &
+  [Key in keyof Inputs]: AsyncThunk<Awaited<ReturnType<Inputs[Key]>>, any, any> &
     ((arg?: FirstArgumentOf<Inputs[Key]>) => { sliceName: string; effectName: string; args: Parameters<Inputs[Key]> });
 } => mapValues<Inputs, typeof forSlice>(inputs as any, mapper as any) as any;
 
 // Returns 'createEffect' with the sliceName argument fixed so you don't have to keep passing it
-export function forSlice(sliceName: string) {
-  return <EffectArgs extends object, EffectReturn>(
+export function forSlice<SliceName extends string>(sliceName: SliceName) {
+  return <EffectName extends string, EffectArgs extends object, EffectReturn>(
     effectFunction: EffectFunction<EffectArgs, EffectReturn>,
-    effectName: string,
-  ) => createEffect<EffectArgs, EffectReturn>(sliceName, effectName, effectFunction);
+    effectName: EffectName,
+  ) => createEffect<SliceName, EffectName, EffectArgs, EffectReturn>(sliceName, effectName, effectFunction);
 }
