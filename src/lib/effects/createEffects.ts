@@ -25,14 +25,24 @@ function createEffect<EffectArgs extends object, EffectReturn>(
   const simpleThunk = createAsyncThunk(effectIdentifier, effectFunction);
   thunkLookupTable.set(effectIdentifier, simpleThunk);
 
-  // If you ended up here via code navigation: -- These are not the droids you're looking for.
-  // Click on `effectName` in `effects.effectName.run()` to get to the actual implementation!
   const serializer = (args?: EffectArgs) => ({ sliceName, effectName, args });
 
-  return {
-    ...simpleThunk,
-    run: serializer,
+  const returnValue = function (...args: any[]) {
+    // @ts-ignore
+    if (this === undefined) {
+      console.log(`this is undefined, returning thunk`);
+      return simpleThunk(args as any);
+    } else {
+      console.log(`this is defuned, returning serialized effect`);
+      return serializer(...args);
+    }
   };
+
+  returnValue.pending = simpleThunk.pending;
+  returnValue.fulfilled = simpleThunk.fulfilled;
+  returnValue.rejected = simpleThunk.rejected;
+
+  return returnValue;
 }
 
 type SingleEffectCreator<State> = (arg: any, thunkApi: BaseThunkAPI<State, any>) => any;
@@ -50,9 +60,9 @@ export const createEffects = <Inputs extends AllEffectCreators<any>>(
   inputs: Inputs,
   mapper: ReturnType<typeof forSlice>,
 ): {
-  [Key in keyof Inputs]: AsyncThunk<any, any, any> & {
-    run: (arg?: FirstArgumentOf<Inputs[Key]>) => { sliceName: string; effectName: string; args: any };
-  };
+  [Key in keyof Inputs]: { pending: string; fulfilled: string; rejected: string } & ((
+    arg?: FirstArgumentOf<Inputs[Key]>,
+  ) => { sliceName: string; effectName: string; args: any });
 } => mapValues<Inputs, any>(inputs as any, mapper) as any;
 
 // Returns 'createEffect' with the sliceName argument fixed so you don't have to keep passing it

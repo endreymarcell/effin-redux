@@ -31,10 +31,10 @@ export const counterSlice = createSlice({
       state.count = initialState.count;
     },
     externalNumberRequested: (state) => {
-      state.$$effects = [effects.fetchExternalNumber.run()];
+      state.$$effects = [effects.fetchExternalNumber()];
     },
     specificNumberRequested: (state, action: PayloadAction<{ requestedNumber: number }>) => {
-      state.$$effects = [effects.setSpecificNumber.run({ requestedNumber: action.payload.requestedNumber })];
+      state.$$effects = [effects.setSpecificNumber({ requestedNumber: action.payload.requestedNumber })];
     },
   }),
   extraReducers: createExtraReducers<CounterState>((builder) =>

@@ -8,7 +8,7 @@ describe("createEffects", () => {
     });
     const effects = createEffects(inputs, forSlice("test"));
 
-    type FetchCount = typeof effects.fetchCount.run;
+    type FetchCount = typeof effects.fetchCount;
 
     expectTypeOf<FetchCount>().not.toBeAny();
     expectTypeOf<FetchCount>().toBeFunction();
@@ -20,20 +20,20 @@ describe("createEffects", () => {
     expectTypeOf<ReturnType<FetchCount>["args"]>().not.toBeAny();
     expectTypeOf<ReturnType<FetchCount>>().toMatchTypeOf<{ sliceName: string; effectName: string; args: any }>();
 
-    expect(effects.fetchCount.run()).toMatchObject({
+    expect(effects.fetchCount).toMatchObject({
       sliceName: "test",
       effectName: "fetchCount",
       args: undefined,
     });
   });
 
-  test("effect with argument", () => {
+  test.only("effect with argument", () => {
     const inputs = createEffectInputs<{}>()({
       setNumber: async ({ whichNumber }: { whichNumber: number }) => whichNumber,
     });
     const effects = createEffects(inputs, forSlice("test"));
 
-    type SetNumber = typeof effects.setNumber.run;
+    type SetNumber = typeof effects.setNumber;
     type FirstParamOfSetNumber = Parameters<SetNumber>[0];
 
     expectTypeOf<SetNumber>().not.toBeAny();
@@ -50,6 +50,10 @@ describe("createEffects", () => {
       args: { whichNumber: number };
     }>();
 
-    expect(effects.setNumber.run()).toMatchObject({ sliceName: "test", effectName: "setNumber", args: undefined });
+    expect(effects.setNumber({ whichNumber: 88 })).toMatchObject({
+      sliceName: "test",
+      effectName: "setNumber",
+      args: { whichNumber: 88 },
+    });
   });
 });
