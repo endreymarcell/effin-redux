@@ -52,7 +52,7 @@ export const createEffects = <State extends object, Inputs extends AllEffectCrea
 ): {
   [Key in keyof Inputs]: AsyncThunk<Awaited<ReturnType<Inputs[Key]>>, any, any> &
     ((arg?: FirstArgumentOf<Inputs[Key]>) => { sliceName: string; effectName: string; args: Parameters<Inputs[Key]> });
-} => mapValues<Inputs, typeof forSlice>(inputs as any, mapper as any) as any;
+} => mapValues<Inputs, typeof forSlice>(inputs, mapper as any) as any;
 
 // Returns 'createEffect' with the sliceName argument fixed so you don't have to keep passing it
 export function forSlice<SliceName extends string>(sliceName: SliceName) {
