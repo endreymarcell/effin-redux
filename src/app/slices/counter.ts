@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createExtraReducers, createReducers } from "$lib";
 import { createEffectInputs, createEffects, forSlice } from "../../lib/effects/createEffects";
+import { addEffect } from "../../lib/effects/withEffects";
 
 export type CounterState = {
   count: number;
@@ -31,7 +32,10 @@ export const counterSlice = createSlice({
       state.count = initialState.count;
     },
     externalNumberRequested: (state) => {
-      state.$$effects = [effects.fetchExternalNumber()];
+      state.$$effects = [effects.fetchExternalNumber(), effects.consoleLog()];
+      // state.$$effects = [effects.fetchExternalNumber()];
+      // addEffect(state, effects.fetchExternalNumber());
+      // addEffect(state, effects.consoleLog());
     },
     specificNumberRequested: (state, action: PayloadAction<{ requestedNumber: number }>) => {
       state.$$effects = [effects.setSpecificNumber({ requestedNumber: action.payload.requestedNumber })];
@@ -53,6 +57,7 @@ const inputs = createEffectInputs<CounterState>()({
   setSpecificNumber: async ({ requestedNumber }: { requestedNumber: number }) => {
     return { requestedNumber };
   },
+  consoleLog: async () => console.log("hali"),
 });
 
 const effects = createEffects(inputs, forSlice("counter"));

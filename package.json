@@ -7,7 +7,9 @@
   "scripts": {
     "test": "npm run test:func -- run && npm run test:type",
     "test:type": "tsc --noEmit",
-    "test:func": "vitest"
+    "test:func": "vitest",
+    "build": "vite build",
+    "dev": "vite"
   },
   "author": "Marcell Endrey endrey.marcell@gmail.com",
   "license": "MIT",

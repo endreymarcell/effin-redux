@@ -45,7 +45,12 @@ export const effectSchedulerReducer: Reducer = <State extends GenericAppStateWit
       const slice = draft[sliceName];
       if ("$$effects" in slice && slice.$$effects) {
         // Intentionally widening the type from SerializedEffect to SerializedEffectInstance
-        slice.$$effects.forEach((effect: SerializedEffectInstance<any>) => {
+        const effects: SerializedEffectInstance<any>[] = slice.$$effects;
+        effects.forEach((effect) => {
+          if (effect.instanceId !== undefined) {
+            // Already tagged
+            return;
+          }
           const instanceId = nanoid();
           effect.instanceId = instanceId;
           scheduleEffect(instanceId, effect);

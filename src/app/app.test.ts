@@ -46,7 +46,7 @@ describe("app with nested slices", () => {
   });
 });
 
-describe("app with side effects", () => {
+describe.only("app with side effects", () => {
   test("success", async () => {
     const store = createAppStore();
     expect(store.getState().counter.count).toBe(0);
