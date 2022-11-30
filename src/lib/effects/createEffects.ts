@@ -35,8 +35,8 @@ function createEffect<SliceName extends string, EffectName extends string, Effec
   return returnValue;
 }
 
-type SingleEffectCreator<State> = (arg: any, thunkApi: BaseThunkAPI<State, any>) => any;
-type AllEffectCreators<State> = { [key: string]: SingleEffectCreator<State> };
+type SingleEffectCreator<State, Arg, Return> = (arg: Arg, thunkApi: BaseThunkAPI<State, any>) => Return;
+type AllEffectCreators<State> = { [key: string]: SingleEffectCreator<State, any, any> };
 // This helper returns its input unchanged. However, due to its type signature,
 // it ensures that you get the correct types for the thunkAPI argument in your input.
 export const createEffectInputs =
