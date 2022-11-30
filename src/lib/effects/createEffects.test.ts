@@ -10,7 +10,7 @@ describe("createEffects", () => {
 
     type FetchCount = typeof effects.fetchCount;
     type FetchCountArgs = Parameters<FetchCount>;
-    type FetchCountReturns = ReturnType<FetchCount>;
+    type SerializedFetchCountInstance = ReturnType<FetchCount>;
 
     expectTypeOf<FetchCount>().not.toBeAny();
     expectTypeOf<FetchCount>().toBeFunction();
@@ -18,9 +18,9 @@ describe("createEffects", () => {
     expectTypeOf<FetchCountArgs>().not.toBeAny();
     expectTypeOf<FetchCountArgs>().toMatchTypeOf();
 
-    expectTypeOf<FetchCountReturns>().not.toBeAny();
-    expectTypeOf<FetchCountReturns["args"]>().not.toBeAny();
-    expectTypeOf<FetchCountReturns>().toMatchTypeOf<{ sliceName: string; effectName: string; args: any }>();
+    expectTypeOf<SerializedFetchCountInstance>().not.toBeAny();
+    expectTypeOf<SerializedFetchCountInstance["args"]>().not.toBeAny();
+    expectTypeOf<SerializedFetchCountInstance>().toMatchTypeOf<{ sliceName: string; effectName: string; args: any }>();
 
     // @ts-expect-error
     effects.fetchCount("unexpected-argument");
@@ -41,7 +41,7 @@ describe("createEffects", () => {
     type SetNumber = typeof effects.setNumber;
     type SetNumberArgs = Parameters<SetNumber>;
     type FirstParamOfSetNumber = SetNumberArgs[0];
-    type SetNumberReturns = ReturnType<SetNumber>;
+    type SerializedSetNumberInstance = ReturnType<SetNumber>;
 
     expectTypeOf<SetNumber>().not.toBeAny();
     expectTypeOf<SetNumber>().toBeFunction();
@@ -49,9 +49,9 @@ describe("createEffects", () => {
     expectTypeOf<FirstParamOfSetNumber>().not.toBeAny();
     expectTypeOf<FirstParamOfSetNumber>().toMatchTypeOf<{ whichNumber: number } | undefined>(); // TODO no undefined
 
-    expectTypeOf<SetNumberReturns>().not.toBeAny();
-    expectTypeOf<SetNumberReturns["args"]>().not.toBeAny();
-    expectTypeOf<SetNumberReturns>().toMatchTypeOf<{
+    expectTypeOf<SerializedSetNumberInstance>().not.toBeAny();
+    expectTypeOf<SerializedSetNumberInstance["args"]>().not.toBeAny();
+    expectTypeOf<SerializedSetNumberInstance>().toMatchTypeOf<{
       sliceName: string;
       effectName: string;
       args: { whichNumber: number };
