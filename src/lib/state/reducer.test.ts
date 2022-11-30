@@ -50,5 +50,9 @@ describe("buildReducerMatrix", () => {
     const error = "No, this is Patrick!";
     store.dispatch(infoSlice.actions.gotBadNews({ error }));
     expect(store.getState().info.appStatus).toMatchObject({ type: "bad", error });
+
+    type FizzBuzzStateWithMaybeAppState = FizzBuzzState & { $$appState: unknown };
+    const fizzBuzzStateWithMaybeAppState = store.getState().fizzBuzz as FizzBuzzStateWithMaybeAppState;
+    expect(fizzBuzzStateWithMaybeAppState.$$appState).toBeUndefined();
   });
 });

@@ -1,9 +1,10 @@
 import { AnyAction } from "redux";
 import { ActionReducerMapBuilder, PayloadAction, Slice } from "@reduxjs/toolkit";
-import { typedObjectFromEntries } from "$utils";
+import { typedObjectFromEntries, typedObjectKeys } from "$utils";
 import { typedFlatten } from "$utils";
 import { myCombineReducers } from "./combineReducers";
 import { StateWithEffects } from "../effects/withEffects";
+import produce from "immer";
 
 type ReducersForState<State> = Record<string, (state: StateWithEffects<State>, action: PayloadAction<any>) => void>;
 
@@ -55,6 +56,22 @@ export function buildReducerMatrix<TState extends {}>(layers: ReadonlyArray<Read
         ...layerState,
       };
     });
+    newState = withoutAppStates(newState);
     return newState as TState;
   };
+}
+
+type SliceStateWithMaybeAppState = {
+  [key: string]: unknown;
+  $$appState?: unknown;
+};
+
+function withoutAppStates<State extends { [key: string]: SliceStateWithMaybeAppState }>(state: State): State {
+  return produce(state, (draft) => {
+    typedObjectKeys(draft).forEach((sliceName) => {
+      if ("$$appState" in draft[sliceName]) {
+        delete draft[sliceName].$$appState;
+      }
+    });
+  });
 }
