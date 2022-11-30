@@ -68,5 +68,8 @@ describe("createEffects", () => {
       effectName: "setNumber",
       args: { whichNumber: 88 },
     });
+
+    type EffectFulfilledActionPayload = ReturnType<typeof effects.setNumber.fulfilled>["payload"];
+    expectTypeOf<EffectFulfilledActionPayload>().toMatchTypeOf<Awaited<number>>();
   });
 });
