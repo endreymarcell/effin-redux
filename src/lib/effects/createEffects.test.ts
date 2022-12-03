@@ -1,6 +1,17 @@
 import { describe, test, expect, expectTypeOf } from "vitest";
 import { createEffectInputs, createEffects, forSlice } from "./createEffects";
 
+describe("createEffectInputs", () => {
+  test("function must be async", () => {
+    createEffectInputs<{}>()({
+      correctVoid: () => {},
+      correctAsync: async () => null,
+      // @ts-expect-error
+      incorrectNonAsync: () => null,
+    })
+  })
+})
+
 describe("createEffects", () => {
   test("effect with no argument", () => {
     const inputs = createEffectInputs<{}>()({
