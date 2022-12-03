@@ -8,6 +8,7 @@
     "test": "npm run test:func -- run && npm run test:type",
     "test:type": "tsc --noEmit",
     "test:func": "vitest",
+    "format": "prettier -w 'src/**/*.*'",
     "build": "vite build",
     "dev": "vite"
   },
