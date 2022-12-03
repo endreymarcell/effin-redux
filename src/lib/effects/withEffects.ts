@@ -1,4 +1,4 @@
-import { AsyncThunk, AsyncThunkAction, Reducer } from "@reduxjs/toolkit";
+import { AsyncThunkAction, Reducer } from "@reduxjs/toolkit";
 
 import { effectRemoverReducer, effectSchedulerReducer } from "./scheduling";
 
@@ -31,7 +31,3 @@ export type GenericAppStateWithEffects = {
 export const withEffects = <State>(pureReducer: Reducer): Reducer<State> => {
   return (state, action) => effectSchedulerReducer(effectRemoverReducer(pureReducer(state, action), action), action);
 };
-
-export function addEffect(state: any, effect: any) {
-  state.$$effects = [...(state.$$effects ?? []), effect];
-}

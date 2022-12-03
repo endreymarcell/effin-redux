@@ -4,6 +4,7 @@ import { buildReducerMatrix, setStoreForScheduledEffects, withEffects } from "$l
 import { counterSlice } from "./slices/counter";
 import { infoSlice } from "./slices/info";
 import { fizzBuzzSlice } from "./slices/fizzBuzz";
+import { getHelpers } from "../lib/helpers";
 
 // TODO this should just be inferred
 export type AppState = {
@@ -14,10 +15,7 @@ export type AppState = {
 
 const sliceLayers = [[counterSlice, infoSlice], [fizzBuzzSlice]] as const;
 const appReducer = buildReducerMatrix<AppState>(sliceLayers);
-
-export function readAppState(state: any): AppState {
-  return state.$$appState;
-}
+export const { addEffect, readAppState } = getHelpers<AppState>();
 
 export function createAppStore() {
   // TODO type param should not be necessary
