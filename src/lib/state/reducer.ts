@@ -3,7 +3,7 @@ import { ActionReducerMapBuilder, PayloadAction, Slice } from "@reduxjs/toolkit"
 import { typedObjectFromEntries, typedObjectKeys } from "$utils";
 import { typedFlatten } from "$utils";
 import { myCombineReducers } from "./combineReducers";
-import { StateWithEffects } from "../effects/withEffects";
+import { StateWithEffects } from "$lib/effects/withEffects";
 import produce from "immer";
 
 type ReducersForState<State> = Record<string, (state: StateWithEffects<State>, action: PayloadAction<any>) => void>;

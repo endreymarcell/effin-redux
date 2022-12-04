@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { createAppStore } from "../app";
+import { createAppStore } from "$app";
 import { counterSlice } from "./counter";
 
 describe("counter slice", () => {

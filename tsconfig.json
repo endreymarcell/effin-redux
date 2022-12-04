@@ -9,7 +9,11 @@
     "strict": true,
     "paths": {
       "$lib": ["./src/lib"],
-      "$utils": ["./src/utils"]
+      "$lib/*": ["./src/lib/*"],
+      "$app": ["./src/app"],
+      "$app/*": ["./src/app/*"],
+      "$utils": ["./src/utils"],
+      "$utils/*": ["./src/utils/*"]
     }
   }
 }

@@ -1,5 +1,3 @@
-import { Slice } from "@reduxjs/toolkit";
-
 export type Flatten<Arr extends ReadonlyArray<unknown>, Result extends ReadonlyArray<unknown> = []> =
   // if Arr is empty -> return Result
   Arr extends readonly []

@@ -1,8 +1,8 @@
 import { describe, test, expect, expectTypeOf } from "vitest";
 import { buildInitialState, buildReducerMatrix } from "./reducer";
-import { counterSlice, CounterState } from "../../app/slices/counter";
-import { infoSlice, InfoState } from "../../app/slices/info";
-import { fizzBuzzSlice, FizzBuzzState } from "../../app/slices/fizzBuzz";
+import { counterSlice, CounterState } from "$app/slices/counter";
+import { infoSlice, InfoState } from "$app/slices/info";
+import { fizzBuzzSlice, FizzBuzzState } from "$app/slices/fizzBuzz";
 import { configureStore } from "@reduxjs/toolkit";
 
 type ExpectedAppState = {

@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { buildReducerMatrix, setStoreForScheduledEffects, withEffects } from "$lib";
+import { getHelpers } from "$lib/helpers";
 
 import { counterSlice } from "./slices/counter";
 import { infoSlice } from "./slices/info";
 import { fizzBuzzSlice } from "./slices/fizzBuzz";
-import { getHelpers } from "../lib/helpers";
 
 // TODO this should just be inferred
 export type AppState = {
