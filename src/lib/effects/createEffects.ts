@@ -53,9 +53,9 @@ type FirstArgumentOf<T> = T extends (firstArgument: infer U) => any ? U : never;
 type CreatedEffect<
   SliceName extends string,
   EffectName extends string,
-  Function extends (...args: any[]) => any,
-> = AsyncThunk<Awaited<ReturnType<Function>>, any, any> &
-  ((arg?: FirstArgumentOf<Function>) => SerializedEffect<SliceName, EffectName, Parameters<Function>>);
+  Function extends (arg: any, thunkApiArgUnusedHere?: any) => any,
+> = AsyncThunk<Awaited<ReturnType<Function>>, FirstArgumentOf<Function>, any> &
+  ((arg?: FirstArgumentOf<Function>) => SerializedEffect<SliceName, EffectName, FirstArgumentOf<Function>>);
 
 export const createEffects = <SliceName extends string, State extends object, Inputs extends AllEffectCreators<State>>(
   inputs: Inputs,

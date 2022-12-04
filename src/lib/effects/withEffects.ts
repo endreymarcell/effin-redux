@@ -2,7 +2,7 @@ import { AsyncThunkAction, Reducer } from "@reduxjs/toolkit";
 
 import { effectRemoverReducer, effectSchedulerReducer } from "./scheduling";
 
-export type SerializedEffect<SliceName extends string, EffectName extends string, Args extends any[]> = {
+export type SerializedEffect<SliceName extends string, EffectName extends string, Args extends {}> = {
   sliceName: SliceName;
   effectName: EffectName;
   args: Args;
