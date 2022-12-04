@@ -16,7 +16,7 @@ function createEffect<SliceName extends string, EffectName extends string, Effec
   const simpleThunk = createAsyncThunk(effectIdentifier, effectFunction);
   thunkLookupTable.set(effectIdentifier, simpleThunk);
 
-  const serializer = (args?: EffectArgs) => ({ sliceName, effectName, args });
+  const serializer = (args: EffectArgs) => ({ sliceName, effectName, args });
 
   const returnValue = function (args: EffectArgs) {
     // @ts-ignore
