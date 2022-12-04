@@ -3,6 +3,7 @@ import { AsyncThunk } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BaseThunkAPI } from "@reduxjs/toolkit/dist/createAsyncThunk";
 import { EffectIdentifier, thunkLookupTable } from "./thunkLookupTable";
+import { SerializedEffect } from "./withEffects";
 
 type EffectFunction<EffectArgs extends object, EffectReturn> = (args?: EffectArgs) => Promise<EffectReturn>;
 
@@ -49,14 +50,18 @@ export const createEffectInputs =
 
 type FirstArgumentOf<T> = T extends (firstArgument: infer U) => any ? U : never;
 
-type CreatedEffect<Func extends (...args: any[]) => any> = AsyncThunk<Awaited<ReturnType<Func>>, any, any> &
-  ((arg?: FirstArgumentOf<Func>) => { sliceName: string; effectName: string; args: Parameters<Func> });
+type CreatedEffect<
+  SliceName extends string,
+  EffectName extends string,
+  Function extends (...args: any[]) => any,
+> = AsyncThunk<Awaited<ReturnType<Function>>, any, any> &
+  ((arg?: FirstArgumentOf<Function>) => SerializedEffect<SliceName, EffectName, Parameters<Function>>);
 
-export const createEffects = <State extends object, Inputs extends AllEffectCreators<State>>(
+export const createEffects = <SliceName extends string, State extends object, Inputs extends AllEffectCreators<State>>(
   inputs: Inputs,
   mapper: ReturnType<typeof forSlice>,
 ): {
-  [Key in keyof Inputs]: CreatedEffect<Inputs[Key]>;
+  [Key in keyof Inputs]: Key extends string ? CreatedEffect<SliceName, Key, Inputs[Key]> : never;
 } => mapValues<Inputs, typeof forSlice>(inputs, mapper as any) as any;
 
 // Returns 'createEffect' with the sliceName argument fixed so you don't have to keep passing it
