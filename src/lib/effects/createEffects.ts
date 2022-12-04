@@ -5,7 +5,7 @@ import { BaseThunkAPI } from "@reduxjs/toolkit/dist/createAsyncThunk";
 import { EffectIdentifier, thunkLookupTable } from "./thunkLookupTable";
 import { SerializedEffect } from "./withEffects";
 
-type EffectFunction<EffectArgs extends object, EffectReturn> = (args?: EffectArgs) => Promise<EffectReturn>;
+type EffectFunction<EffectArgs extends object, EffectReturn> = (args: EffectArgs) => Promise<EffectReturn>;
 
 function createEffect<SliceName extends string, EffectName extends string, EffectArgs extends object, EffectReturn>(
   sliceName: SliceName,
@@ -50,18 +50,28 @@ export const createEffectInputs =
 
 type FirstArgumentOf<T> = T extends (firstArgument: infer U) => any ? U : never;
 
-type CreatedEffect<
+type CreatedEffectWithArg<
   SliceName extends string,
   EffectName extends string,
   Function extends (arg: any, thunkApiArgUnusedHere?: any) => any,
 > = AsyncThunk<Awaited<ReturnType<Function>>, FirstArgumentOf<Function>, any> &
-  ((arg?: FirstArgumentOf<Function>) => SerializedEffect<SliceName, EffectName, FirstArgumentOf<Function>>);
+  ((arg: FirstArgumentOf<Function>) => SerializedEffect<SliceName, EffectName, FirstArgumentOf<Function>>);
+
+type CreatedEffectWithoutArg<
+  SliceName extends string,
+  EffectName extends string,
+  Function extends (arg: never, thunkApiArgUnusedHere?: any) => any,
+> = AsyncThunk<Awaited<ReturnType<Function>>, undefined, any> & (() => SerializedEffect<SliceName, EffectName, {}>);
 
 export const createEffects = <SliceName extends string, State extends object, Inputs extends AllEffectCreators<State>>(
   inputs: Inputs,
   mapper: ReturnType<typeof forSlice>,
 ): {
-  [Key in keyof Inputs]: Key extends string ? CreatedEffect<SliceName, Key, Inputs[Key]> : never;
+  [Key in keyof Inputs]: Key extends string
+    ? Inputs[Key] extends () => any
+      ? CreatedEffectWithoutArg<SliceName, Key, Inputs[Key]>
+      : CreatedEffectWithArg<SliceName, Key, Inputs[Key]>
+    : never;
 } => mapValues<Inputs, typeof forSlice>(inputs, mapper as any) as any;
 
 // Returns 'createEffect' with the sliceName argument fixed, so you don't have to keep passing it
