@@ -49,12 +49,14 @@ export const createEffectInputs =
 
 type FirstArgumentOf<T> = T extends (firstArgument: infer U) => any ? U : never;
 
+type CreatedEffect<Func extends (...args: any[]) => any> = AsyncThunk<Awaited<ReturnType<Func>>, any, any> &
+  ((arg?: FirstArgumentOf<Func>) => { sliceName: string; effectName: string; args: Parameters<Func> });
+
 export const createEffects = <State extends object, Inputs extends AllEffectCreators<State>>(
   inputs: Inputs,
   mapper: ReturnType<typeof forSlice>,
 ): {
-  [Key in keyof Inputs]: AsyncThunk<Awaited<ReturnType<Inputs[Key]>>, any, any> &
-    ((arg?: FirstArgumentOf<Inputs[Key]>) => { sliceName: string; effectName: string; args: Parameters<Inputs[Key]> });
+  [Key in keyof Inputs]: CreatedEffect<Inputs[Key]>;
 } => mapValues<Inputs, typeof forSlice>(inputs, mapper as any) as any;
 
 // Returns 'createEffect' with the sliceName argument fixed so you don't have to keep passing it
