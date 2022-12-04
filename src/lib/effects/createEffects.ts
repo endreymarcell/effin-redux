@@ -64,7 +64,7 @@ export const createEffects = <SliceName extends string, State extends object, In
   [Key in keyof Inputs]: Key extends string ? CreatedEffect<SliceName, Key, Inputs[Key]> : never;
 } => mapValues<Inputs, typeof forSlice>(inputs, mapper as any) as any;
 
-// Returns 'createEffect' with the sliceName argument fixed so you don't have to keep passing it
+// Returns 'createEffect' with the sliceName argument fixed, so you don't have to keep passing it
 export function forSlice<SliceName extends string>(sliceName: SliceName) {
   return <EffectName extends string, EffectArgs extends object, EffectReturn>(
     effectFunction: EffectFunction<EffectArgs, EffectReturn>,
