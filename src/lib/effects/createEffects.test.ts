@@ -81,6 +81,7 @@ describe("createEffects", () => {
     });
 
     type EffectFulfilledActionPayload = ReturnType<typeof effects.setNumber.fulfilled>["payload"];
+    expectTypeOf<EffectFulfilledActionPayload>().not.toBeAny();
     expectTypeOf<EffectFulfilledActionPayload>().toMatchTypeOf<Awaited<number>>();
   });
 });
