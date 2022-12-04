@@ -1,5 +1,5 @@
-import { createAppStore } from "./app/app";
-import { counterSlice } from "./app/slices/counter";
+import { createAppStore } from "$app";
+import { counterSlice } from "$app/slices/counter";
 
 const store = createAppStore();
 store.dispatch(counterSlice.actions.externalNumberRequested());
