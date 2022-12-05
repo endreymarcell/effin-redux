@@ -6,11 +6,13 @@ import { addEffect } from "../app";
 export type CounterState = {
   count: number;
   isCounting: boolean;
+  isWaitingForExternalNumber: boolean;
 };
 
 const initialState: CounterState = {
   count: 0,
   isCounting: false,
+  isWaitingForExternalNumber: false,
 };
 
 export const counterSlice = createSlice({
@@ -41,8 +43,12 @@ export const counterSlice = createSlice({
   }),
   extraReducers: createExtraReducers<CounterState>((builder) =>
     builder
+      .addCase(effects.fetchExternalNumber.pending, (state) => {
+        state.isWaitingForExternalNumber = true;
+      })
       .addCase(effects.fetchExternalNumber.fulfilled, (state, action) => {
-        state.count = action.payload.result;
+        state.isWaitingForExternalNumber = false;
+        state.count = action.payload;
       })
       .addCase(effects.setSpecificNumber.fulfilled, (state, action) => {
         state.count = action.payload.requestedNumber;
@@ -51,7 +57,13 @@ export const counterSlice = createSlice({
 });
 
 const inputs = createEffectInputs<CounterState>()({
-  fetchExternalNumber: async () => ({ result: 99 }),
+  fetchExternalNumber: () => {
+    return fetch("https://www.randomnumberapi.com/api/v1.0/random?count=1")
+      .then((response) => response.json())
+      .then((parsedResponse: [number]) => {
+        return parsedResponse[0];
+      });
+  },
   setSpecificNumber: async ({ requestedNumber }: { requestedNumber: number }) => {
     return { requestedNumber };
   },

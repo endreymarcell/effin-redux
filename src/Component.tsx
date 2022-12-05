@@ -5,6 +5,7 @@ import { counterSlice } from "$app/slices/counter";
 export const Component: React.FunctionComponent = () => {
   const count = useAppSelector((state) => state.counter.count);
   const isCounting = useAppSelector((state) => state.counter.isCounting);
+  const isWaitingForExternalNumber = useAppSelector((state) => state.counter.isWaitingForExternalNumber);
 
   const dispatch = useAppDispatch();
   const onStartCountingClicked = () => dispatch(counterSlice.actions.startCountingClicked());
@@ -23,15 +24,15 @@ export const Component: React.FunctionComponent = () => {
         <header style={{ textAlign: "center" }}>
           <h1 style={{ marginBottom: 0 }}>effin-redux showcase</h1>
         </header>
-        <button className="outline secondary" id="current-count">
+        <button className="outline secondary" id="current-count" style={{ cursor: "initial" }}>
           Count is {count}
         </button>
         <div className="grid">
           <button onClick={onStartCountingClicked} disabled={isCounting}>
-            Start counting
+            Start counting ▶️
           </button>
           <button onClick={onStopCountingClicked} disabled={!isCounting}>
-            Stop counting
+            Stop counting ⏹
           </button>
         </div>
         <div className="grid">
@@ -41,7 +42,13 @@ export const Component: React.FunctionComponent = () => {
           <button onClick={onResetClicked}>Reset</button>
         </div>
         <div>
-          <button onClick={onRequestExternalNumberClicked}>Request external number</button>
+          <button
+            onClick={onRequestExternalNumberClicked}
+            aria-busy={isWaitingForExternalNumber}
+            disabled={isWaitingForExternalNumber}
+          >
+            Request external number
+          </button>
         </div>
         <div className="grid">
           <input
