@@ -4,6 +4,7 @@ import { counterSlice } from "$app/slices/counter";
 
 export const Component: React.FunctionComponent = () => {
   const count = useAppSelector((state) => state.counter.count);
+  const fizzBuzz = useAppSelector((state) => state.fizzBuzz.value);
   const isCounting = useAppSelector((state) => state.counter.isCounting);
   const isWaitingForExternalNumber = useAppSelector((state) => state.counter.isWaitingForExternalNumber);
 
@@ -24,8 +25,11 @@ export const Component: React.FunctionComponent = () => {
         <header style={{ textAlign: "center" }}>
           <h1 style={{ marginBottom: 0 }}>effin-redux showcase</h1>
         </header>
-        <button className="outline secondary" id="current-count" style={{ cursor: "initial" }}>
+        <button className="outline" id="current-count" style={{ cursor: "initial" }}>
           Count is {count}
+        </button>
+        <button className="outline secondary" id="current-fizzbuzz" style={{ cursor: "initial" }}>
+          {fizzBuzz ?? "none"}
         </button>
         <div className="grid">
           <button onClick={onStartCountingClicked} disabled={isCounting}>
