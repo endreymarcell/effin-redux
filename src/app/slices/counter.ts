@@ -31,9 +31,7 @@ export const counterSlice = createSlice({
       state.count++;
     },
     increaseCountClicked: (state) => {
-      if (state.isCounting) {
-        state.count++;
-      }
+      state.count++;
     },
     resetCountClicked: (state) => {
       state.count = initialState.count;
@@ -91,4 +89,17 @@ const inputs = createEffectInputs<CounterState>()({
   consoleLog: async () => console.log("Here's a random log line just to demonstrate triggering multiple effects."),
 });
 
-const effects = createEffects(inputs, forSlice("counter"));
+const testInputs = createEffectInputs<CounterState>()({
+  startCountingInterval: async () => -1,
+  stopCountingInterval: async () => {},
+  fetchExternalNumber: async () => -2,
+  setSpecificNumber: async ({ requestedNumber }: { requestedNumber: number }) => {
+    return { requestedNumber };
+  },
+  consoleLog: async () => {},
+  _isTest: async () => true,
+});
+
+const inputsForEnvironment = import.meta.env.VITEST === "true" ? testInputs : inputs;
+
+const effects = createEffects(inputsForEnvironment, forSlice("counter"));

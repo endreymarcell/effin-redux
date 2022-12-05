@@ -53,7 +53,7 @@ describe.only("app with side effects", () => {
 
     store.dispatch(counterSlice.actions.externalNumberRequested());
     await new Promise(process.nextTick);
-    expect(store.getState().counter.count).toBe(99);
+    expect(store.getState().counter.count).toBe(-2);
 
     store.dispatch(counterSlice.actions.specificNumberRequested({ requestedNumber: 88 }));
     await new Promise(process.nextTick);
