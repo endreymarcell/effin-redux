@@ -6,12 +6,14 @@ import { addEffect } from "../app";
 export type CounterState = {
   count: number;
   isCounting: boolean;
+  _countingIntervalHandle: number | null;
   isWaitingForExternalNumber: boolean;
 };
 
 const initialState: CounterState = {
   count: 0,
   isCounting: false,
+  _countingIntervalHandle: null,
   isWaitingForExternalNumber: false,
 };
 
@@ -20,10 +22,13 @@ export const counterSlice = createSlice({
   initialState,
   reducers: createReducers<CounterState>()({
     startCountingClicked: (state) => {
-      state.isCounting = true;
+      addEffect(state, effects.startCountingInterval());
     },
     stopCountingClicked: (state) => {
-      state.isCounting = false;
+      addEffect(state, effects.stopCountingInterval());
+    },
+    countIntervalTicked: (state) => {
+      state.count++;
     },
     increaseCountClicked: (state) => {
       if (state.isCounting) {
@@ -43,6 +48,13 @@ export const counterSlice = createSlice({
   }),
   extraReducers: createExtraReducers<CounterState>((builder) =>
     builder
+      .addCase(effects.startCountingInterval.fulfilled, (state, action) => {
+        state.isCounting = true;
+        state._countingIntervalHandle = action.payload;
+      })
+      .addCase(effects.stopCountingInterval.fulfilled, (state) => {
+        state.isCounting = false;
+      })
       .addCase(effects.fetchExternalNumber.pending, (state) => {
         state.isWaitingForExternalNumber = true;
       })
@@ -57,6 +69,15 @@ export const counterSlice = createSlice({
 });
 
 const inputs = createEffectInputs<CounterState>()({
+  startCountingInterval: async (_unused, thunkAPI) =>
+    setInterval(() => thunkAPI.dispatch(counterSlice.actions.countIntervalTicked()), 1000),
+  stopCountingInterval: async (_unused, thunkAPI) => {
+    const countingIntervalHandle = thunkAPI.getState().counter._countingIntervalHandle;
+    if (countingIntervalHandle === null) {
+      throw new Error(`Stop counting requested but interval handle is undefined`);
+    }
+    clearInterval(countingIntervalHandle);
+  },
   fetchExternalNumber: () => {
     return fetch("https://www.randomnumberapi.com/api/v1.0/random?count=1")
       .then((response) => response.json())
@@ -67,7 +88,7 @@ const inputs = createEffectInputs<CounterState>()({
   setSpecificNumber: async ({ requestedNumber }: { requestedNumber: number }) => {
     return { requestedNumber };
   },
-  consoleLog: async () => console.log("hali"),
+  consoleLog: async () => console.log("Here's a random log line just to demonstrate triggering multiple effects."),
 });
 
 const effects = createEffects(inputs, forSlice("counter"));
