@@ -1,21 +1,28 @@
-import React from 'react';
+import React from "react";
 
 import { createAppStore } from "$app";
-import { counterSlice } from "$app/slices/counter";
 import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
+import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
+import { Component } from "./Component";
 
-const store = createAppStore();
-store.dispatch(counterSlice.actions.externalNumberRequested());
-setTimeout(() => console.log(store.getState()), 1000);
+const App: React.FunctionComponent<{ store: ToolkitStore }> = ({ store }) => {
+  return (
+    <Provider store={store}>
+      <Component />
+    </Provider>
+  );
+};
 
-const App: React.FunctionComponent = () => {
-  return <div>hali</div>;
-}
-
-const rootNode = document.getElementById('app');
+const rootNode = document.getElementById("app");
 if (!rootNode) {
-  throw new Error(`Failed to render into <div id="app"> as there is no such dif on the page.`)
+  throw new Error(`Failed to render into <div id="app"> as there is no such dif on the page.`);
 }
 
-const root = createRoot(rootNode)
-root.render(<App />)
+const root = createRoot(rootNode);
+const store = createAppStore();
+
+root.render(<App store={store} />);
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
