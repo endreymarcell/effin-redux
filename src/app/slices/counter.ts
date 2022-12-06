@@ -25,7 +25,10 @@ export const counterSlice = createSlice({
       addEffect(state, effects.startCountingInterval());
     },
     stopCountingClicked: (state) => {
-      addEffect(state, effects.stopCountingInterval());
+      if (state._countingIntervalHandle === null) {
+        throw new Error(`Stop counting requested but counting is off already`);
+      }
+      addEffect(state, effects.stopCountingInterval({ countingIntervalHandle: state._countingIntervalHandle }));
     },
     countIntervalTicked: (state) => {
       state.count++;
@@ -67,14 +70,18 @@ export const counterSlice = createSlice({
 });
 
 const inputs = createEffectInputs<CounterState>()({
-  startCountingInterval: async (_unused, thunkAPI) =>
-    setInterval(() => thunkAPI.dispatch(counterSlice.actions.countIntervalTicked()), 1000),
-  stopCountingInterval: async (_unused, thunkAPI) => {
-    const countingIntervalHandle = thunkAPI.getState().counter._countingIntervalHandle;
+  startCountingInterval: async (_unused, thunkAPI) => {
+    // Workaround for circular types, see https://github.com/endreymarcell/effin-redux/issues/1
+    const actionToDispatch: any = counterSlice.actions.countIntervalTicked();
+    return window.setInterval(() => thunkAPI.dispatch(actionToDispatch), 1000);
+  },
+  stopCountingInterval: async ({ countingIntervalHandle }: { countingIntervalHandle: number }) => {
+    // Counting interval handle could also be read from the state here, but there's a type error there
+    // see https://github.com/endreymarcell/effin-redux/issues/2
     if (countingIntervalHandle === null) {
       throw new Error(`Stop counting requested but interval handle is undefined`);
     }
-    clearInterval(countingIntervalHandle);
+    window.clearInterval(countingIntervalHandle);
   },
   fetchExternalNumber: () => {
     return fetch("https://www.randomnumberapi.com/api/v1.0/random?count=1")
@@ -100,6 +107,6 @@ const testInputs = createEffectInputs<CounterState>()({
   _isTest: async () => true,
 });
 
-const inputsForEnvironment = import.meta.env.VITEST === "true" ? testInputs : inputs;
+const inputsForEnvironment: typeof inputs = import.meta.env.VITEST === "true" ? testInputs : inputs;
 
 const effects = createEffects(inputsForEnvironment, forSlice("counter"));
