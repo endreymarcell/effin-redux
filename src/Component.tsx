@@ -33,16 +33,14 @@ export const Component: React.FunctionComponent = () => {
         </button>
         <div className="grid">
           <button onClick={onStartCountingClicked} disabled={isCounting}>
-            Start counting ▶️
+            Start counting ▶
           </button>
           <button onClick={onStopCountingClicked} disabled={!isCounting}>
-            Stop counting ⏹
+            Stop counting ■
           </button>
         </div>
         <div className="grid">
-          <button onClick={onIncreaseCountClicked} disabled={!isCounting}>
-            Increase
-          </button>
+          <button onClick={onIncreaseCountClicked}>Increase</button>
           <button onClick={onResetClicked}>Reset</button>
         </div>
         <div>
@@ -60,6 +58,7 @@ export const Component: React.FunctionComponent = () => {
             id="input-number"
             value={inputNumber}
             onChange={(event) => setInputNumber(parseInt(event.target.value))}
+            style={{ textAlign: "right" }}
           />
           <button onClick={() => onSpecificNumberRequested(inputNumber)}>Request this number</button>
         </div>
