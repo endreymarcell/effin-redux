@@ -18,10 +18,13 @@ export const fizzBuzzSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: createExtraReducers((builder) => {
-    builder.addCase(counterSlice.actions.increaseCountClicked, (state) => {
-      const currentNumber = readAppState(state).counter.count;
-      state.value = calculateFizzBuzz(currentNumber);
-    });
+    builder.addMatcher(
+      (action) => action.type.startsWith("counter"),
+      (state) => {
+        const currentNumber = readAppState(state).counter.count;
+        state.value = calculateFizzBuzz(currentNumber);
+      },
+    );
   }),
 });
 
