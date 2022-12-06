@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { counterSlice } from "./counter";
 import { createExtraReducers } from "$lib";
-import { readAppState } from "../app";
+import { readAppState } from "$app";
 
 type FizzBuzzValue = null | "fizz" | "buzz" | "fizzbuzz";
 
