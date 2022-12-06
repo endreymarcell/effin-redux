@@ -8,16 +8,16 @@ describe("createEffectInputs", () => {
       correctAsync: async () => null,
       // @ts-expect-error
       incorrectNonAsync: () => null,
-    })
-  })
-})
+    });
+  });
+});
 
 describe("createEffects", () => {
   test("effect with no argument", () => {
     const inputs = createEffectInputs<{}>()({
       fetchCount: async () => 99,
     });
-    const effects = createEffects(inputs, forSlice("test"));
+    const effects = createEffects({}, inputs, forSlice("test"));
 
     type FetchCount = typeof effects.fetchCount;
     type FetchCountArgs = Parameters<FetchCount>;
@@ -47,7 +47,7 @@ describe("createEffects", () => {
     const inputs = createEffectInputs<{}>()({
       setNumber: async ({ whichNumber }: { whichNumber: number }) => whichNumber,
     });
-    const effects = createEffects(inputs, forSlice("test"));
+    const effects = createEffects({}, inputs, forSlice("test"));
 
     type SetNumber = typeof effects.setNumber;
     type SetNumberArgs = Parameters<SetNumber>;

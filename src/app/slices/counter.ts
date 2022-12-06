@@ -70,7 +70,7 @@ export const counterSlice = createSlice({
 });
 
 const inputs = createEffectInputs<CounterState>()({
-  startCountingInterval: async (_unused, thunkAPI) => {
+  startCountingInterval: async (args: {}, thunkAPI) => {
     // Workaround for circular types, see https://github.com/endreymarcell/effin-redux/issues/1
     const actionToDispatch: any = counterSlice.actions.countIntervalTicked();
     return window.setInterval(() => thunkAPI.dispatch(actionToDispatch), 1000);
@@ -109,4 +109,4 @@ const testInputs = createEffectInputs<CounterState>()({
 
 const inputsForEnvironment: typeof inputs = import.meta.env.VITEST === "true" ? testInputs : inputs;
 
-const effects = createEffects(inputsForEnvironment, forSlice("counter"));
+const effects = createEffects(initialState, inputsForEnvironment, forSlice("counter"));

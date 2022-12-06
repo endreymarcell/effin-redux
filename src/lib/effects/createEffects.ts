@@ -60,15 +60,21 @@ type CreatedEffectWithArg<
 type CreatedEffectWithoutArg<
   SliceName extends string,
   EffectName extends string,
-  Function extends () => any,
+  Function extends (_unused: EmptyObject, thunkAPI: any) => any,
 > = AsyncThunk<Awaited<ReturnType<Function>>, undefined, any> & (() => SerializedEffect<SliceName, EffectName, {}>);
 
+type EmptyObject = {
+  [Key in any]: never;
+};
+
 export const createEffects = <SliceName extends string, State extends object, Inputs extends AllEffectCreators<State>>(
+  // I don't actually need this for anything other than having access to the State type
+  someState: State,
   inputs: Inputs,
   mapper: ReturnType<typeof forSlice>,
 ): {
   [Key in keyof Inputs]: Key extends string
-    ? Inputs[Key] extends () => any
+    ? Inputs[Key] extends (() => any) | ((arg: EmptyObject, thunkAPI: any) => any)
       ? CreatedEffectWithoutArg<SliceName, Key, Inputs[Key]>
       : CreatedEffectWithArg<SliceName, Key, Inputs[Key]>
     : never;
