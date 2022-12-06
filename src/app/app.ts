@@ -6,7 +6,6 @@ import { counterSlice } from "./slices/counter";
 import { infoSlice } from "./slices/info";
 import { fizzBuzzSlice } from "./slices/fizzBuzz";
 
-// TODO this should just be inferred
 export type AppState = {
   counter: ReturnType<typeof counterSlice["getInitialState"]>;
   info: ReturnType<typeof infoSlice["getInitialState"]>;
@@ -18,11 +17,7 @@ const appReducer = buildReducerMatrix<AppState>(sliceLayers);
 export const { addEffect, readAppState } = getHelpers<AppState>();
 
 export function createAppStore() {
-  // TODO type param should not be necessary
-  const store = configureStore<AppState>({
-    reducer: withEffects(appReducer),
-  });
-  // TODO to be fair, this is also pretty bad
+  const store = configureStore<AppState>({ reducer: withEffects(appReducer) });
   setStoreForScheduledEffects(store);
   return store;
 }
