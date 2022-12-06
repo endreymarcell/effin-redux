@@ -29,6 +29,10 @@ export const fizzBuzzSlice = createSlice({
 });
 
 function calculateFizzBuzz(input: number): FizzBuzzValue {
+  if (input === 0) {
+    return null;
+  }
+
   const isFizz = input % 3 === 0;
   const isBuzz = input % 5 === 0;
   if (isFizz && isBuzz) {
