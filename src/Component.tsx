@@ -40,14 +40,18 @@ export const Component: React.FunctionComponent = () => {
           </button>
         </div>
         <div className="grid">
-          <button onClick={onIncreaseCountClicked}>Increase</button>
-          <button onClick={onResetClicked}>Reset</button>
+          <button onClick={onIncreaseCountClicked} disabled={isCounting}>
+            Increase
+          </button>
+          <button onClick={onResetClicked} disabled={isCounting || count === 0}>
+            Reset
+          </button>
         </div>
         <div>
           <button
             onClick={onRequestExternalNumberClicked}
             aria-busy={isWaitingForExternalNumber}
-            disabled={isWaitingForExternalNumber}
+            disabled={isCounting || isWaitingForExternalNumber}
           >
             Request external number
           </button>
@@ -59,8 +63,11 @@ export const Component: React.FunctionComponent = () => {
             value={inputNumber}
             onChange={(event) => setInputNumber(parseInt(event.target.value))}
             style={{ textAlign: "right" }}
+            disabled={isCounting}
           />
-          <button onClick={() => onSpecificNumberRequested(inputNumber)}>Request this number</button>
+          <button onClick={() => onSpecificNumberRequested(inputNumber)} disabled={isCounting || inputNumber === 0}>
+            Request this number
+          </button>
         </div>
         <footer>
           <a
