@@ -11,30 +11,26 @@ _This functionality is optional._
 `combineReducers` combines reducers horizontally, with each of them getting their own slice of the state.  
 `reduceReducers` chains reducers vertically, letting them update the same piece of state, one after the other.
 
-effin-redux combines the two to create a reducer matrix, with multiple layers of combined reducers.
-This allows you to create slices that depend on the state returned from other slices.
-
-This is not going against redux-toolkit: the documentation [points out](https://github.com/redux-utilities/reduce-reducers) that its combineReducers is just one possible helper for modularizing the reducer of larger apps.
+effin-redux combines the two. This allows you to create slices that depend on the state returned from other slices.
 
 ### Usage
 
-You define the composition of your slices when constructing the store:
+When passing your reducers to `configureStore()`, use the custom `combineReducers()` implementation of effin-redux:
 
 ```typescript
 // app.ts
-import { counterSlice, CounterState } from "$app/slices/counter";
-import { infoSlice, InfoState } from "$app/slices/info";
-import { fizzBuzzSlice, FizzBuzzState } from "$app/slices/fizzBuzz";
+import { counterSlice } from "$app/slices/counter";
+import { infoSlice } from "$app/slices/info";
+import { fizzBuzzSlice } from "$app/slices/fizzBuzz";
 
-export type AppState = {
-  counter: CounterState;
-  info: InfoState;
-  fizzBuzz: FizzBuzzState;
-};
-
-const sliceLayers = [[counterSlice, infoSlice], [fizzBuzzSlice]] as const;
-const appReducer = buildReducerMatrix<AppState>(sliceLayers);
-export const store = configureStore<AppState>({ reducer: appReducer });
+// The order of the slices matters here - info can read counter, fizzBuzz can read counter and info.
+const appReducer = combineReducers({
+  counter: counterSlice.reducer,
+  info: infoSlice.reducer,
+  fizzBuzz: fizzBuzzSlice.reducer,
+});
+export const store = configureStore({ reducer: appReducer });
+export type AppState = ReturnType<typeof store.getState>
 ```
 
 Make sure to also create the `readAppState()` helper:
@@ -62,8 +58,6 @@ export const fizzBuzzSlice = createSlice({
   ),
 });
 ```
-
-Of course, this means that the order of the layers in the reducer matrix matters.
 
 #### References
 
