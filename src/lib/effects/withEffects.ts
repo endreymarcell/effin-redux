@@ -28,6 +28,6 @@ export type GenericAppStateWithEffects = {
  * Take a reducer that returns serialized effect descriptions in the state's $$effects field,
  * and return one that actually executes those effects.
  */
-export const withEffects = <State>(pureReducer: Reducer): Reducer<State> => {
+export const withEffects = <State>(pureReducer: Reducer<State>): Reducer<State> => {
   return (state, action) => effectSchedulerReducer(effectRemoverReducer(pureReducer(state, action), action), action);
 };

@@ -15,20 +15,12 @@ effin-redux combines the two. This allows you to create slices that depend on th
 
 ### Usage
 
-When passing your reducers to `configureStore()`, use the custom `combineReducers()` implementation of effin-redux:
+When passing your reducers to `configureStore()`, use the custom `combineSlices()` implementation of effin-redux:
 
 ```typescript
 // app.ts
-import { counterSlice } from "$app/slices/counter";
-import { infoSlice } from "$app/slices/info";
-import { fizzBuzzSlice } from "$app/slices/fizzBuzz";
-
 // The order of the slices matters here - info can read counter, fizzBuzz can read counter and info.
-const appReducer = combineReducers({
-  counter: counterSlice.reducer,
-  info: infoSlice.reducer,
-  fizzBuzz: fizzBuzzSlice.reducer,
-});
+const appReducer = combineSlices([ counterSlice, infoSlice, fizzBuzzSlice ]);
 export const store = configureStore({ reducer: appReducer });
 export type AppState = ReturnType<typeof store.getState>
 ```
