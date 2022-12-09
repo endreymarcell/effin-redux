@@ -19,8 +19,8 @@ When passing your reducers to `configureStore()`, use the custom `combineSlices(
 
 ```typescript
 // app.ts
-// The order of the slices matters here - info can read counter, fizzBuzz can read counter and info.
-const appReducer = combineSlices([ counterSlice, infoSlice, fizzBuzzSlice ]);
+const slices = [counterSlice, infoSlice, fizzBuzzSlice] as const; // const is mandatory, and the order matters
+const appReducer = combineSlices(slices);
 export const store = configureStore({ reducer: appReducer });
 export type AppState = ReturnType<typeof store.getState>
 ```
