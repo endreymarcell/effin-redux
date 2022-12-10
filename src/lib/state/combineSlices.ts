@@ -33,7 +33,7 @@ export const combineSlices = <Slices extends readonly Slice[], AppState extends 
   }) as any;
 };
 
-function getInitialState<Slices extends readonly Slice[], AppState extends SlicesToState<Slices>>(
+export function getInitialState<Slices extends readonly Slice[], AppState extends SlicesToState<Slices>>(
   slices: readonly Slice[],
 ): SlicesToState<Slices> {
   const initialState: any = {};
