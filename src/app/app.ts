@@ -6,7 +6,7 @@ import { combineSlices } from "$lib/state/combineSlices";
 import { configureStore } from "$lib/state/appStore";
 
 const appReducer = combineSlices([counterSlice, infoSlice, fizzBuzzSlice] as const);
-export const createAppStore = () => configureStore(appReducer);
+export const createAppStore = () => configureStore(appReducer); // Expose store creator function for tests
 export const store = createAppStore();
 
 export type AppState = ReturnType<typeof store.getState>;
