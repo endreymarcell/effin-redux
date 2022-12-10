@@ -12,7 +12,7 @@ type FindSliceByName<Slices extends readonly Slice[], Name extends string> = Ext
   Slice<any, any, Name>
 >;
 
-type SlicesToState<Slices extends readonly Slice[]> = {
+export type SlicesToState<Slices extends readonly Slice[]> = {
   [Key in SliceArrayToKeys<Slices>]: FindSliceByName<Slices, Key> extends Slice<infer SliceState, any, infer Name>
     ? SliceState
     : never;

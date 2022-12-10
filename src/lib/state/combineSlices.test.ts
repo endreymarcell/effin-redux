@@ -2,10 +2,32 @@ import { counterSlice, CounterState } from "$app/slices/counter";
 import { fizzBuzzSlice, FizzBuzzState } from "$app/slices/fizzBuzz";
 import { infoSlice, InfoState } from "$app/slices/info";
 import { describe, test, expect, expectTypeOf } from "vitest";
-import { getInitialState } from "./combineSlices";
+import { getInitialState, SlicesToState } from "./combineSlices";
+
+describe("SlicesToState type helper", () => {
+  test("single slice", () => {
+    const slices = [infoSlice] as const;
+    type ExpectedState = {
+      info: InfoState;
+    };
+    type ResultState = SlicesToState<typeof slices>;
+    expectTypeOf<ExpectedState>().toMatchTypeOf<ResultState>();
+  });
+
+  test("multiple slices", () => {
+    const slices = [infoSlice, fizzBuzzSlice, counterSlice] as const;
+    type ExpectedState = {
+      info: InfoState;
+      fizzBuzz: FizzBuzzState;
+      counter: CounterState;
+    };
+    type ResultState = SlicesToState<typeof slices>;
+    expectTypeOf<ExpectedState>().toMatchTypeOf<ResultState>();
+  });
+});
 
 describe("getInitialState", () => {
-  test("works with a single slice", () => {
+  test("single slice", () => {
     const slices = [infoSlice] as const;
     const initialState = getInitialState(slices);
 
@@ -19,7 +41,7 @@ describe("getInitialState", () => {
     expectTypeOf(initialState).toMatchTypeOf<ExpectedState>();
   });
 
-  test("works with multiple slices", () => {
+  test("multiple slices", () => {
     const slices = [infoSlice, fizzBuzzSlice, counterSlice] as const;
     const initialState = getInitialState(slices);
 
