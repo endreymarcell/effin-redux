@@ -1,19 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { setStoreForScheduledEffects, withEffects } from "$lib";
-import { getHelpers } from "$lib/helpers";
-
 import { counterSlice } from "./slices/counter";
 import { infoSlice } from "./slices/info";
 import { fizzBuzzSlice } from "./slices/fizzBuzz";
+import { getHelpers } from "$lib/helpers";
 import { combineSlices } from "$lib/state/combineSlices";
+import { configureStore } from "$lib/state/appStore";
 
 const appReducer = combineSlices([counterSlice, infoSlice, fizzBuzzSlice] as const);
+export const createAppStore = () => configureStore(appReducer);
+export const store = createAppStore();
 
-export function createAppStore() {
-  const store = configureStore({ reducer: withEffects(appReducer) });
-  setStoreForScheduledEffects(store);
-  return store;
-}
-
-export type AppState = ReturnType<ReturnType<typeof createAppStore>["getState"]>;
+export type AppState = ReturnType<typeof store.getState>;
 export const { addEffect, readAppState } = getHelpers<AppState>();

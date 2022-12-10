@@ -1,6 +1,6 @@
 import React from "react";
 
-import { createAppStore } from "$app";
+import { store } from "$app";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
@@ -20,7 +20,6 @@ if (!rootNode) {
 }
 
 const root = createRoot(rootNode);
-const store = createAppStore();
 
 root.render(<App store={store} />);
 
