@@ -1,5 +1,7 @@
 # Effin Redux
 
+![effin-redux logo](static/logo-md.png)
+
 Extend [redux-toolkit](https://redux-toolkit.js.org/) with effects and more.
 
 Check out the [live demo](https://endreymarcell.github.io/effin-redux/) (ideally using [Redux DevTools](https://github.com/reduxjs/redux-devtools)) and [the code behind it](https://github.com/endreymarcell/effin-redux/blob/master/src/app/app.ts).
