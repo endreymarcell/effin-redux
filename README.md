@@ -6,6 +6,8 @@ Extend [redux-toolkit](https://redux-toolkit.js.org/) with effects and more.
 
 Check out the [live demo](https://endreymarcell.github.io/effin-redux/) (ideally using [Redux DevTools](https://github.com/reduxjs/redux-devtools)) and [the code behind it](https://github.com/endreymarcell/effin-redux/blob/master/src/app/app.ts).
 
+![Test status](https://github.com/endreymarcell/effin-redux/actions/workflows/tests.yml/badge.svg)
+
 ## Allow both horizontal and vertical combination of reducers
 
 _This functionality is optional._
