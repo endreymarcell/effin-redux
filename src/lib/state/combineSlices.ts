@@ -2,6 +2,7 @@ import { Reducer, Slice } from "@reduxjs/toolkit";
 import { AnyAction } from "redux";
 import produce from "immer";
 import { typedObjectKeys } from "$utils";
+import { dieUnlessTest } from "$utils/other";
 
 type SliceArrayToKeys<Slices extends readonly Slice[]> = {
   [Index in keyof Slices]: Slices[Index]["name"];
@@ -24,6 +25,10 @@ export const combineSlices = <Slices extends readonly Slice[], AppState extends 
   return ((state: AppState, action: AnyAction): AppState => {
     let appState = state === undefined ? getInitialState(slices) : JSON.parse(JSON.stringify(state));
     for (const slice of slices) {
+      if (slice === undefined) {
+        dieUnlessTest("combineSlices received an undefined slice");
+        continue;
+      }
       appState = {
         ...appState,
         [slice.name]: slice.reducer({ ...appState[slice.name], $$appState: appState }, action),
@@ -38,6 +43,10 @@ export function getInitialState<Slices extends readonly Slice[], AppState extend
 ): SlicesToState<Slices> {
   const initialState: any = {};
   for (const slice of slices) {
+    if (slice === undefined) {
+      dieUnlessTest("getInitialState received an undefined slice");
+      continue;
+    }
     initialState[slice.name] = slice.getInitialState();
   }
   return initialState;
