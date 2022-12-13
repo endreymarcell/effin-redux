@@ -22,7 +22,8 @@ export const Component: React.FunctionComponent = () => {
   return (
     <div className="container">
       <article style={{ width: "50%", minWidth: "600px", marginInline: "auto" }}>
-        <header style={{ textAlign: "center" }}>
+        <header style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
+          <img alt="effin-redux logo" src="/static/logo-xs.png" style={{ width: "48px", height: "48px" }} />
           <h1 style={{ marginBottom: 0 }}>effin-redux showcase</h1>
         </header>
         <button className="outline" id="current-count" style={{ cursor: "initial" }}>
