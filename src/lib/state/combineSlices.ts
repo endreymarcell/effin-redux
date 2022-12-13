@@ -34,7 +34,7 @@ export const combineSlices = <Slices extends readonly Slice[], AppState extends 
 };
 
 export function getInitialState<Slices extends readonly Slice[], AppState extends SlicesToState<Slices>>(
-  slices: readonly Slice[],
+  slices: Slices,
 ): SlicesToState<Slices> {
   const initialState: any = {};
   for (const slice of slices) {
