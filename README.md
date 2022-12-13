@@ -1,6 +1,6 @@
 # Effin Redux
 
-![effin-redux logo](static/logo-md.png)
+![effin-redux logo](static/logo-sm.png)
 
 Extend [redux-toolkit](https://redux-toolkit.js.org/) with effects and more.
 
