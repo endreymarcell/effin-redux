@@ -3,6 +3,7 @@
   "include": ["src/index.ts", "src/vite-env.d.ts"],
   "exclude": ["src/demo-app"],
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "declaration": true
   }
 }
