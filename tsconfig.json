@@ -10,8 +10,8 @@
     "paths": {
       "$lib": ["./src/lib"],
       "$lib/*": ["./src/lib/*"],
-      "$app": ["./src/app"],
-      "$app/*": ["./src/app/*"],
+      "$demo-app": ["./src/demo-app"],
+      "$demo-app/*": ["./src/demo-app/*"],
       "$utils": ["./src/utils"],
       "$utils/*": ["./src/utils/*"]
     },

@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { createAppStore } from "$app";
+import { createAppStore } from "$demo-app/app";
 import { counterSlice, CounterState } from "./counter";
 
 const { actions, reducer, getInitialState } = counterSlice;

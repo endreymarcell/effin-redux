@@ -1,6 +1,6 @@
-import { counterSlice, CounterState } from "$app/slices/counter";
-import { fizzBuzzSlice, FizzBuzzState } from "$app/slices/fizzBuzz";
-import { infoSlice, InfoState } from "$app/slices/info";
+import { counterSlice, CounterState } from "../../demo-app/slices/counter";
+import { fizzBuzzSlice, FizzBuzzState } from "../../demo-app/slices/fizzBuzz";
+import { infoSlice, InfoState } from "../../demo-app/slices/info";
 import { describe, test, expect, expectTypeOf } from "vitest";
 import { getInitialState, SlicesToState } from "./combineSlices";
 

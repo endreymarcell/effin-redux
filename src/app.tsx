@@ -1,6 +1,6 @@
 import React from "react";
 
-import { store } from "$app";
+import { store } from "$demo-app/app";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";

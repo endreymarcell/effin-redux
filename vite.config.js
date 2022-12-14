@@ -5,4 +5,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   base: "/effin-redux/",
   plugins: [tsconfigPaths(), react()],
+  build: {
+    outDir: "dist-app",
+  },
 });

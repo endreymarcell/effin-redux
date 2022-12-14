@@ -2,14 +2,16 @@
   "name": "effin-redux",
   "version": "0.1.0",
   "description": "Extend redux-toolkit with side effect handling and layered reducers",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
     "test": "npm run test:func -- run && npm run test:type",
     "test:type": "tsc --noEmit",
     "test:func": "vitest",
     "format": "prettier -w 'src/**/*.*'",
-    "build": "vite build",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "build-app": "vite build",
     "dev": "vite"
   },
   "author": "Marcell Endrey endrey.marcell@gmail.com",

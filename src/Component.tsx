@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import { counterSlice } from "$app/slices/counter";
+import { counterSlice } from "./demo-app/slices/counter";
 
 export const Component: React.FunctionComponent = () => {
   const count = useAppSelector((state) => state.counter.count);
