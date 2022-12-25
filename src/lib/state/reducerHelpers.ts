@@ -1,5 +1,5 @@
 import { ActionReducerMapBuilder, PayloadAction } from "@reduxjs/toolkit";
-import { StateWithEffects } from "$lib/effects/withEffects";
+import { StateWithEffects } from "../../lib";
 
 type ReducersForState<State> = Record<string, (state: StateWithEffects<State>, action: PayloadAction<any>) => void>;
 

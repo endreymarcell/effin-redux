@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { createReducers } from "$lib";
+import { createReducers } from "../../lib";
 
 type GoodStatus = {
   type: "good";

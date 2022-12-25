@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { createExtraReducers, createReducers } from "$lib";
-import { createEffectInputs, createEffects, forSlice } from "$lib/effects/createEffects";
+import { createExtraReducers, createReducers } from "../../lib";
+import { createEffectInputs, createEffects, forSlice } from "../../lib/effects/createEffects";
 import { addEffect } from "../app"; // For some reason, vitest doesn't understand $app
 
 export type CounterState = {

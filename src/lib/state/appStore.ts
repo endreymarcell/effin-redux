@@ -1,5 +1,5 @@
-import { setStoreForScheduledEffects } from "$lib/effects/scheduling";
-import { withEffects } from "$lib/effects/withEffects";
+import { setStoreForScheduledEffects } from "../effects/scheduling";
+import { withEffects } from "../effects/withEffects";
 import { configureStore as originalConfigureStore, Reducer } from "@reduxjs/toolkit";
 
 export function configureStore<Store>(appReducer: Reducer<Store>) {

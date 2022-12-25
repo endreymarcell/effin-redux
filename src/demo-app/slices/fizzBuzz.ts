@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createExtraReducers } from "$lib";
-import { readAppState } from "../app"; // For some reason, vitest doesn't understand $app
+import { createExtraReducers } from "../../lib";
+import { readAppState } from "../app";
 
 type FizzBuzzValue = null | "fizz" | "buzz" | "fizzbuzz";
 

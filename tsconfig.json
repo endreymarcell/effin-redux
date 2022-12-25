@@ -7,14 +7,6 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "paths": {
-      "$lib": ["./src/lib"],
-      "$lib/*": ["./src/lib/*"],
-      "$demo-app": ["./src/demo-app"],
-      "$demo-app/*": ["./src/demo-app/*"],
-      "$utils": ["./src/utils"],
-      "$utils/*": ["./src/utils/*"]
-    },
     "jsx": "react"
   }
 }

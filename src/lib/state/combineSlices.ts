@@ -1,8 +1,8 @@
 import { Reducer, Slice } from "@reduxjs/toolkit";
 import { AnyAction } from "redux";
 import produce from "immer";
-import { typedObjectKeys } from "$utils";
-import { dieUnlessTest } from "$utils/other";
+import { typedObjectKeys } from "../../utils";
+import { dieUnlessTest } from "../../utils/other";
 
 type SliceArrayToKeys<Slices extends readonly Slice[]> = {
   [Index in keyof Slices]: Slices[Index]["name"];

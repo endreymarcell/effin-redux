@@ -1,9 +1,9 @@
 import { counterSlice } from "./slices/counter";
 import { infoSlice } from "./slices/info";
 import { fizzBuzzSlice } from "./slices/fizzBuzz";
-import { getHelpers } from "$lib/helpers";
-import { combineSlices } from "$lib/state/combineSlices";
-import { configureStore } from "$lib/state/appStore";
+import { getHelpers } from "../lib";
+import { combineSlices } from "../lib";
+import { configureStore } from "../lib";
 
 const appReducer = combineSlices([counterSlice, infoSlice, fizzBuzzSlice] as const);
 export const createAppStore = () => configureStore(appReducer); // Expose store creator function for tests
