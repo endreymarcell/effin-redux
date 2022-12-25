@@ -12,7 +12,7 @@
     "format": "prettier -w 'src/**/*.*'",
     "build": "rm -rf dist && tsc -p tsconfig.build.json",
     "build-app": "vite build",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "dev": "vite"
   },
   "author": "Marcell Endrey endrey.marcell@gmail.com",
