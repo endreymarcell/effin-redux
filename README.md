@@ -9,14 +9,18 @@ Check out the [live demo](https://endreymarcell.github.io/effin-redux/) (ideally
 ![Test status](https://github.com/endreymarcell/effin-redux/actions/workflows/tests.yml/badge.svg)
 ![npm version](https://img.shields.io/npm/v/effin-redux?color=blue)
 
+# Features
+
 ## Allow both horizontal and vertical combination of reducers
 
-_This functionality is optional._
-
-`combineReducers` combines reducers horizontally, with each of them getting their own slice of the state.  
-`reduceReducers` chains reducers vertically, letting them update the same piece of state, one after the other.
+- `combineReducers` combines reducers horizontally, with each of them getting their own slice of the state.
+This is great for organizing your state, but it provides no solution for when you need to access the state of a slice from another slice. The Redux FAQ itself has no single recommendation, but mentions writing a custom `combineReducers` implementation as a possible solution.
+- `reduceReducers` chains reducers vertically, letting them update the same piece of state, one after the other. This is great for acting on the same piece of state, but provides no help when it comes to modularizing the shape of your state.
 
 effin-redux combines the two. This allows you to create slices that depend on the state returned from other slices.
+
+<details>
+<summary>Expand to read more...</summary>
 
 ### Usage
 
@@ -49,7 +53,10 @@ export const fizzBuzzSlice = createSlice({
   extraReducers: (builder) => builder.addMatcher(
     (action) => action.type.startsWith("counter"),
     (state) => {
-      const currentNumber = readAppState(state).counter.count;
+      // state only refers to the state of this one slice
+      // but with readAppState, you can get access to the state of other slices too:
+      const appState = readAppState(state);
+      const currentNumber = appState.counter.count;
       state.value = calculateFizzBuzz(currentNumber);
     },
   ),
@@ -60,20 +67,33 @@ export const fizzBuzzSlice = createSlice({
 
 - [combineReducers (redux docs)](https://redux.js.org/api/combinereducers)
 - [reduceReducers (github)](https://github.com/redux-utilities/reduce-reducers)
+- [Redux FAQ entry about sharing state between reducers](https://redux.js.org/faq/reducers#how-do-i-share-state-between-two-reducers-do-i-have-to-use-combinereducers)
+
+</details>
 
 ## Allow calculating side effects in the reducer
 
-_This functionality is optional._
+Redux Toolkit, the opinionated redux library includes the Thunk middleware by default and recommends using it for side effects.
+However, triggering side effects by dispatching thunks from within the application goes against what redux is trying to achieve!
 
-Triggering side effects by dispatching thunks from within the application goes against what redux is trying to achieve.
-The application should dispatch the action describing what happened in the application, and the reducer should decide what happens next.
+**The application's logic should live in its reducer.** This is already true for state transitions. But calculating which side effect to trigger and with what arguments is part of the logic too, and it's deeply connected to those state transitions. Why should it be placed in UI components?
 
 effin-redux adds helpers that let your reducer describe what side effects it wants to trigger, and then triggers them on your behalf.
 The effects themselves are described by the same thunks that redux-toolkit provides.
 
+<details>
+<summary>Expand to read more...</summary>
+
 ### Usage
 
-Use the `withEffects()` helper to make your store capable of handling effects:
+Use the provided `configureStore()` implementation to get side effects:
+```typescript
+import { configureStore } from "effin-redux";
+
+export const store = configureStore(appReducer);
+```
+
+Alternatively, if you need to use the original `configureStore()` function from redux-toolkit, you can patch your reducer manually via effin-redux's `withEffects()` helper:
 
 ```typescript
 import { withEffects } from "effin-redux";
@@ -137,25 +157,30 @@ And handle them like any other async thunk:
 });
 ```
 
+Using the Redux Developer Tools, you will be able to inspect what effects has been scheduled by your reducer, and also when it is being executed.
+
 #### References
 
 - [How can I represent side effects such as AJAX calls? (redux docs)](https://redux.js.org/faq/actions#how-can-i-represent-side-effects-such-as-ajax-calls-why-do-we-need-things-like-action-creators-thunks-and-middleware-to-do-async-behavior)
 - [Trying to put side effects in the correct place (redux github issue)](https://github.com/reduxjs/redux/issues/291)
 
-## Recover lost state type in createSlice reducers
+</details>
 
-_This functionality is optional._
+## Recover lost state type in createSlice reducers
 
 When defining slices via `createSlice()`, the type of the `state` argument within the `reducers` object should be correctly inferred.
 Unfortunately, this feature broke with a TypeScript change.
 
 effin-redux adds helpers to work around this - you still have to add the type explicitly, but now at least you only have to do it once, not in every case.
 
+<details>
+<summary>Expand to read more...</summary>
+
 ### Usage
 
 Just wrap your slices' reducers and extraReducers with the appropriate helpers:
 ```typescript
-import { createExtraReducers, createReducers } from "$lib";
+import { createExtraReducers, createReducers } from "effin-redux";
 
 export const counterSlice = createSlice({
   name: "counter",
@@ -172,3 +197,13 @@ export const counterSlice = createSlice({
 #### References
 
 - [State argument on createSlice is no longer inferred with typescript beta 4.8 and they do not plan to fix it (redux-toolkit github issue)](https://github.com/reduxjs/redux-toolkit/issues/2543)
+
+</details>
+
+# Installation
+
+```typescript
+npm install effin-redux
+```
+
+The package is distributed as CJS and comes with TypeScript type definitions included.
