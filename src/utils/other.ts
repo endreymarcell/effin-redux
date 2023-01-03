@@ -7,9 +7,13 @@ export function dieUnlessTest(error: any) {
 }
 
 export function cloneDeep(object: any) {
-  if ("structuredClone" in globalThis) {
-    return structuredClone(object);
-  } else {
-    return _.cloneDeep(object);
+  try {
+    if ("structuredClone" in globalThis) {
+      return structuredClone(object);
+    } else {
+      return _.cloneDeep(object);
+    }
+  } catch (error) {
+    return undefined;
   }
 }
