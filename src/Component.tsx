@@ -1,6 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { counterSlice } from "./demo-app/slices/counter";
+import logo from "../static/logo-xs.png";
 
 export const Component: React.FunctionComponent = () => {
   const count = useAppSelector((state) => state.counter.count);
@@ -23,7 +24,7 @@ export const Component: React.FunctionComponent = () => {
     <div className="container">
       <article style={{ width: "50%", minWidth: "600px", marginInline: "auto" }}>
         <header style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
-          <img alt="effin-redux logo" src="/static/logo-xs.png" style={{ width: "48px", height: "48px" }} />
+          <img alt="effin-redux logo" src={logo} style={{ width: "48px", height: "48px" }} />
           <h1 style={{ marginBottom: 0 }}>effin-redux showcase</h1>
         </header>
         <button className="outline" id="current-count" style={{ cursor: "initial" }}>
