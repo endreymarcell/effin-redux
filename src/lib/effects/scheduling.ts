@@ -65,14 +65,13 @@ export const effectSchedulerReducer: Reducer = <State extends GenericAppStateWit
  * Take the serialized form of an effect, schedule it for execution, and execute when idle.
  */
 function scheduleEffect(instanceId: string, serializedEffect: SerializedEffect<any, any, any>) {
-  try {
-    // Have to clone serializedEffect because it's a proxy coming from Immer that might be revoked in the meantime
-    scheduledEffects.push({ instanceId, serializedEffect: cloneDeep(serializedEffect) });
-  } catch (error) {
-    console.error(`Failed to schedule effect:`, serializedEffect);
-    console.error(`Received error:`, error);
+  // Have to clone serializedEffect because it's a proxy coming from Immer that might be revoked in the meantime
+  const clonedEffect = cloneDeep(serializedEffect);
+  if (clonedEffect === undefined) {
+    console.warn(`Failed to clone serialized effect.`);
     return;
   }
+  scheduledEffects.push({ instanceId, serializedEffect: clonedEffect });
 
   // Delay execution to the next idle time
   Promise.resolve().then(() => {
