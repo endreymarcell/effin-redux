@@ -23,7 +23,7 @@ export const combineSlices = <Slices extends readonly Slice[], AppState extends 
   slices: Slices,
 ): Reducer<AppState> => {
   return ((state: AppState, action: AnyAction): AppState => {
-    let appState = state === undefined ? getInitialState(slices) : (cloneDeep(state) as any);
+    let appState = state === undefined ? getInitialState(slices) : (produce(state, (state) => state) as any); // TODO fix the type
     for (const slice of slices) {
       if (slice === undefined) {
         dieUnlessTest("combineSlices received an undefined slice");
