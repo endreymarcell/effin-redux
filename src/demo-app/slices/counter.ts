@@ -71,9 +71,7 @@ export const counterSlice = createSlice({
 
 const inputs = createEffectInputs<CounterState>()({
   startCountingInterval: async (args: {}, thunkAPI) => {
-    // Workaround for circular types, see https://github.com/endreymarcell/effin-redux/issues/1
-    const actionToDispatch: any = counterSlice.actions.countIntervalTicked();
-    return window.setInterval(() => thunkAPI.dispatch(actionToDispatch), 1000);
+    return window.setInterval(() => thunkAPI.dispatch(counterSlice.actions.countIntervalTicked()), 1000);
   },
   stopCountingInterval: async ({ countingIntervalHandle }: { countingIntervalHandle: number }) => {
     // Counting interval handle could also be read from the state here, but there's a type error there
