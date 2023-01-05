@@ -30,11 +30,7 @@ export const effectSchedulerReducer: Reducer = <State extends GenericAppStateWit
   state: State,
   action: AnyAction,
 ) => {
-  const isIrrelevantAction =
-    action.type.startsWith("$$effect:") ||
-    action.type.endsWith("/pending") ||
-    action.type.endsWith("/fulfilled") ||
-    action.type.endsWith("/rejected");
+  const isIrrelevantAction = action.type.startsWith("$$effect:");
 
   if (isIrrelevantAction) {
     return state;
