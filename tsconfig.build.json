@@ -3,9 +3,6 @@
   "include": ["src/index.ts", "src/vite-env.d.ts"],
   "exclude": ["src/demo-app"],
   "compilerOptions": {
-    "module": "commonjs",
-    "outDir": "dist",
-    "target": "ES5",
     "declaration": true
   }
 }

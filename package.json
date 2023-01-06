@@ -2,15 +2,23 @@
   "name": "effin-redux",
   "version": "0.1.16",
   "description": "Extend redux-toolkit with side effect handling and layered reducers",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "type": "module",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "scripts": {
     "test": "npm run test:func -- run && npm run test:type",
     "test:type": "tsc --noEmit",
     "test:func": "vitest",
     "format": "prettier -w 'src/**/*.*'",
-    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "build": "rm -rf dist && npm run build:cjs && npm run build:esm && scripts/fixup-cjs-esm-distribution.sh",
+    "build:cjs": "tsc -p tsconfig.build.cjs.json",
+    "build:esm": "tsc -p tsconfig.build.esm.json",
     "build-app": "vite build",
     "prepublishOnly": "npm run build",
     "dev": "vite"
