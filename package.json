@@ -5,6 +5,11 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/cjs/index.d.ts",
+  "files": [
+    "src/lib",
+    "src/utils",
+    "src/index.ts"
+  ],
   "exports": {
     ".": {
       "import": "./dist/esm/index.js",
