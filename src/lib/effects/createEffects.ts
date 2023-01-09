@@ -1,5 +1,5 @@
 import mapValues from "lodash/mapValues";
-import { AsyncThunk } from "@reduxjs/toolkit";
+import { AsyncThunk, Slice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BaseThunkAPI } from "@reduxjs/toolkit/dist/createAsyncThunk";
 import { EffectIdentifier, thunkLookupTable } from "./thunkLookupTable";
@@ -67,18 +67,19 @@ type EmptyObject = {
   [Key in any]: never;
 };
 
-export const createEffects = <SliceName extends string, State extends object, Inputs extends AllEffectCreators<State>>(
-  // I don't actually need this for anything other than having access to the State type
-  someState: State,
-  inputs: Inputs,
-  mapper: ReturnType<typeof forSlice>,
-): {
-  [Key in keyof Inputs]: Key extends string
-    ? Inputs[Key] extends (() => any) | ((arg: EmptyObject, thunkAPI: any) => any)
-      ? CreatedEffectWithoutArg<SliceName, Key, Inputs[Key]>
-      : CreatedEffectWithArg<SliceName, Key, Inputs[Key]>
-    : never;
-} => mapValues<Inputs, typeof forSlice>(inputs, mapper as any) as any;
+export const createEffects =
+  <State extends {}>() =>
+  <SliceName extends string, Inputs extends AllEffectCreators<State>>(
+    inputs: Inputs,
+    mapper: ReturnType<typeof forSlice>,
+  ): {
+    [Key in keyof Inputs]: Key extends string
+      ? Inputs[Key] extends (() => any) | ((arg: EmptyObject, thunkAPI: any) => any)
+        ? CreatedEffectWithoutArg<SliceName, Key, Inputs[Key]>
+        : CreatedEffectWithArg<SliceName, Key, Inputs[Key]>
+      : never;
+  } =>
+    mapValues<Inputs, typeof forSlice>(inputs, mapper as any) as any;
 
 // Returns 'createEffect' with the sliceName argument fixed, so you don't have to keep passing it
 export function forSlice<SliceName extends string>(sliceName: SliceName) {

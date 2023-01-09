@@ -119,7 +119,7 @@ const inputs = createEffectInputs<CounterState>()({
   },
 });
 
-const effects = createEffects(initialState, inputs, forSlice("counter"));
+const effects = createEffects<CounterState>()(inputs, forSlice("counter"));
 ```
 
 Then schedule them in your reducer:
