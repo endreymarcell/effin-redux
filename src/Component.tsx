@@ -20,11 +20,13 @@ export const Component: React.FunctionComponent = () => {
 
   const [inputNumber, setInputNumber] = React.useState(0);
 
+  const onLogoClicked = () => fetch("https://httpstat.us/500");
+
   return (
     <div className="container">
       <article style={{ width: "50%", minWidth: "600px", marginInline: "auto" }}>
         <header style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
-          <img alt="effin-redux logo" src={logo} style={{ width: "48px", height: "48px" }} />
+          <img alt="effin-redux logo" src={logo} style={{ width: "48px", height: "48px" }} onClick={onLogoClicked} />
           <h1 style={{ marginBottom: 0 }}>effin-redux showcase</h1>
         </header>
         <button className="outline" id="current-count" style={{ cursor: "initial" }}>
