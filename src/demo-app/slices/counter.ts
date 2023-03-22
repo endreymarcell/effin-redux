@@ -81,10 +81,10 @@ const inputs = createEffectInputs<CounterState>()({
     window.clearInterval(countingIntervalHandle);
   },
   fetchExternalNumber: () => {
-    return fetch("https://www.randomnumberapi.com/api/v1.0/random?count=1")
+    return fetch("https://random-data-api.com/api/v2/users")
       .then((response) => response.json())
-      .then((parsedResponse: [number]) => {
-        return parsedResponse[0];
+      .then(({ id }: { id: number }) => {
+        return id;
       });
   },
   setSpecificNumber: async ({ requestedNumber }: { requestedNumber: number }) => {
