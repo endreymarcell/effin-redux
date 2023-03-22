@@ -10,5 +10,106 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/app.tsx"></script>
+    <script type="text/javascript">
+      (function() {
+        const birdeatsbug = (window.birdeatsbug = window.birdeatsbug || []);
+        if (birdeatsbug.initialize) return;
+        if (birdeatsbug.invoked) {
+          if (window.console && console.error) {
+            console.error("birdeatsbug snippet included twice.");
+          }
+          return;
+        }
+        birdeatsbug.invoked = true;
+        birdeatsbug.methods = [
+          "setOptions",
+          "trigger",
+          "resumeSession",
+          "takeScreenshot",
+          "startRecording",
+          "stopRecording",
+          "stopSession",
+          "uploadSession",
+          "deleteSession",
+        ];
+        birdeatsbug.factory = function(method) {
+          return function() {
+            const args = Array.prototype.slice.call(arguments);
+            args.unshift(method);
+            birdeatsbug.push(args);
+            return birdeatsbug;
+          };
+        };
+        for (let i = 0; i < birdeatsbug.methods.length; i++) {
+          const key = birdeatsbug.methods[i];
+          birdeatsbug[key] = birdeatsbug.factory(key);
+        }
+        birdeatsbug.load = function() {
+          const script = document.createElement("script");
+          script.type = "module";
+          script.async = true;
+          script.src = "https://sdk.birdeatsbug.com/latest/core.js";
+          const mountJsBefore = document.getElementsByTagName("script")[0] || document.body.firstChild;
+          mountJsBefore.parentNode.insertBefore(script, mountJsBefore);
+          const style = document.createElement("link");
+          style.rel = "stylesheet";
+          style.type = "text/css";
+          style.href = "https://sdk.birdeatsbug.com/latest/style.css";
+          const mountCssBefore = document.querySelector('link[rel="stylesheet"]') || mountJsBefore;
+          mountCssBefore.parentNode.insertBefore(style, mountCssBefore);
+        };
+        birdeatsbug.load();
+        window.birdeatsbug.setOptions({
+          publicAppId: "7fcb0ce9-a744-4678-ba83-f17e4632a743",
+          recordedEventTypes: {
+            click: true,
+            keystrokes: true,
+            debug: true,
+            log: true,
+            info: true,
+            warn: true,
+            error: true,
+            assert: true,
+            "error-uncaught": true,
+            "error-promise": true,
+            network: true,
+            dom: true,
+          },
+          ui: {
+            theme: "light",
+            previewScreen: {
+              title: "required",
+              description: "required",
+              email: false,
+            },
+            submitConfirmationScreen: { sessionLink: false },
+            text: {
+              previewScreen: {
+                titleInputPlaceholder: "What went wrong?",
+                descriptionInputPlaceholder: "Please describe the how exactly the error occurred",
+              },
+              submitConfirmationScreen: {
+                message: "Thanks for the report!",
+              },
+            },
+          },
+          user: {
+            email: "marcell.endrey@transferwise.com",
+          },
+          hooks: {
+            beforeUpload: (data) => {
+              return {
+                ...data,
+                session: {
+                  ...data.session,
+                  description: `[ring/plugin/stable/6.150.13] ${data.session.description}`,
+                },
+              };
+            },
+          },
+          instantReplay: true,
+        });
+      })();
+    </script>
   </body>
 </html>
