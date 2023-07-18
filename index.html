@@ -61,52 +61,6 @@
         birdeatsbug.load();
         window.birdeatsbug.setOptions({
           publicAppId: "7da6edc0-3de0-4070-a7f0-e132d87cc35b",
-          recordedEventTypes: {
-            click: true,
-            keystrokes: true,
-            debug: true,
-            log: true,
-            info: true,
-            warn: true,
-            error: true,
-            assert: true,
-            "error-uncaught": true,
-            "error-promise": true,
-            network: true,
-            dom: true,
-          },
-          ui: {
-            theme: "light",
-            previewScreen: {
-              title: "required",
-              description: "required",
-              email: false,
-            },
-            submitConfirmationScreen: { sessionLink: false },
-            text: {
-              previewScreen: {
-                titleInputPlaceholder: "What went wrong?",
-                descriptionInputPlaceholder: "Explain in more details what happened:",
-              },
-              submitConfirmationScreen: {
-                message: "Thanks for the report!",
-              },
-            },
-          },
-          user: {
-            email: "marcell.endrey@transferwise.com",
-          },
-          hooks: {
-            beforeUpload: (data) => {
-              return {
-                ...data,
-                session: {
-                  ...data.session,
-                  description: `[ring/plugin/stable/6.150.13] ${data.session.description}`,
-                },
-              };
-            },
-          },
           instantReplay: true,
         });
       })();
