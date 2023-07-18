@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
-    <link rel="icon" href="static/favicon.png">
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css" />
+    <link rel="icon" href="static/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>effin-redux showcase</title>
   </head>
@@ -11,7 +11,7 @@
     <div id="app"></div>
     <script type="module" src="/src/app.tsx"></script>
     <script type="text/javascript">
-      (function() {
+      (function () {
         const birdeatsbug = (window.birdeatsbug = window.birdeatsbug || []);
         if (birdeatsbug.initialize) return;
         if (birdeatsbug.invoked) {
@@ -32,8 +32,8 @@
           "uploadSession",
           "deleteSession",
         ];
-        birdeatsbug.factory = function(method) {
-          return function() {
+        birdeatsbug.factory = function (method) {
+          return function () {
             const args = Array.prototype.slice.call(arguments);
             args.unshift(method);
             birdeatsbug.push(args);
@@ -44,25 +44,22 @@
           const key = birdeatsbug.methods[i];
           birdeatsbug[key] = birdeatsbug.factory(key);
         }
-        birdeatsbug.load = function() {
+        birdeatsbug.load = function () {
           const script = document.createElement("script");
           script.type = "module";
           script.async = true;
-          script.src = "https://sdk.birdeatsbug.com/latest/core.js";
+          script.src = "https://sdk.birdeatsbug.com/v2/core.js";
           const mountJsBefore = document.getElementsByTagName("script")[0] || document.body.firstChild;
           mountJsBefore.parentNode.insertBefore(script, mountJsBefore);
           const style = document.createElement("link");
           style.rel = "stylesheet";
           style.type = "text/css";
-          style.href = "https://sdk.birdeatsbug.com/latest/style.css";
+          style.href = "https://sdk.birdeatsbug.com/v2/style.css";
           const mountCssBefore = document.querySelector('link[rel="stylesheet"]') || mountJsBefore;
           mountCssBefore.parentNode.insertBefore(style, mountCssBefore);
         };
         birdeatsbug.load();
-        window.birdeatsbug.setOptions({
-          publicAppId: "7da6edc0-3de0-4070-a7f0-e132d87cc35b",
-          instantReplay: true,
-        });
+        window.birdeatsbug.setOptions({ publicAppId: "a444d810-d31f-4c94-983b-92a2e3d0f0d1" });
       })();
     </script>
   </body>
