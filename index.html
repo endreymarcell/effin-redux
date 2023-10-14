@@ -6,62 +6,10 @@
     <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAA7dJREFUWEfdl2lME1EQx/+7UFuOlqtCwaOIVUQtCYq3GI9IJDFg1MT7ioqJGr9qjEg8YtRPRpHED17xSrzFOyiKMQWDAa1GQYUK1FKh0EOOQqFr3qtdaUWj6UHifNqd2cz85s28eW8Z5OaykoGzd7IMNgOIhX+kwc4h39JUdICR5BXvYhns809c1yh2DjlM+PFinR8zd8+zgQBw/ZG9M6ZXAAQsg0mxEsiCheiy21FQbXDJiQEwLkaMeIkILMNQe2ePnX7jMYBSGoJz88ZALhFRh03tXRh5ppQHkIUMwMWMMUiJFvO64adUaLF2ew5AMi9bPoEG7+E43K0x4LPFitwSDR/sRqYSMwdH0PeiOiNqv3UgR6VBm63Hc4C0QeEoyEqmjvaUaHCkot5l6Un279ZMBinBxUo9thR9+KXdPCrBssQY5M9JpE7Tr79Cmd7iEmB8tBiPFqdQ3daiKlyo/OpdgBWjYpA32wEw91oFXn795hIgNUaMwkUOgM2Pq3Cp6i8AhAEsliRGgyxvpEiAVlsPXuotOP9eD2Ono3ESI4KxUDEQSmkoMoZFUR2x61o7aXNd/9SIDWPjEBcqxMokGbXf0zTjraGVPh8sq4Vz77uUIEwYiNtZydSxu+jbujD/5mtUmzuQmSDF2Xmjf/mGKD6Z2rH6wTuolqb2aSfKyPxnfQMcTlNgozIOdo7D4bI6PNUaMSIiGPunJoDAFWtNWFCgplsqWxmHhLAgTJRJaKDC2hY0W21obO/CCbUOOZPjESUSYK48ktpfNJihsVj5cvS5Ah/XTYE0SIBb1U1Y+/A9n8H2VDl2TJSD4wDF6RK0WG3U5tUeCApkocueTh3nvdIiR1XDA6xKkuHorJH0feaVcrxuctTSqwBiQQDqNk6jjo9V1GN3r2HSG2DO1QqUNzq63W8ApN6H0hQ06IzL5Xjzo5t9DjBELEK6PBLbUgZjqFgEc2c3ks6WoqPbcZD4DKDK2A4WoDvAKaS7Nz2qxFOtidf5DMAZwdBhw5N6IwrrWnCnxsBn7rT7DIAE3VuqgdrQCvsfris+A3DfBb8baf8XQIggANofc8B9EPllBUgQzfqpCBcG4vkXEzJvqfkDw28Ah6YPR3byIBqPQLxpbgM9AABUm604+Zbc4H+KV3uAuCVlOJWeRIePuzzTmpBVoPYtgNN7sjQUo6OCIWDJOHIIuQ+QedBbFOFBmBIbRlX3PzeDzI3eQk7WjHjHhUWlM9O7hLt4dCf8XW/8i77/f836/ee0v3/PvwNGI1zXhsXGFwAAAABJRU5ErkJggg==" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>effin-redux showcase</title>
-    <script type="module" crossorigin src="/effin-redux/assets/index.f40fdeed.js"></script>
+    <script type="module" crossorigin src="/effin-redux/assets/index.0d6a5c4f.js"></script>
   </head>
   <body>
     <div id="app"></div>
     
-    <script type="text/javascript">
-      (function () {
-        const birdeatsbug = (window.birdeatsbug = window.birdeatsbug || []);
-        if (birdeatsbug.initialize) return;
-        if (birdeatsbug.invoked) {
-          if (window.console && console.error) {
-            console.error("birdeatsbug snippet included twice.");
-          }
-          return;
-        }
-        birdeatsbug.invoked = true;
-        birdeatsbug.methods = [
-          "setOptions",
-          "trigger",
-          "resumeSession",
-          "takeScreenshot",
-          "startRecording",
-          "stopRecording",
-          "stopSession",
-          "uploadSession",
-          "deleteSession",
-        ];
-        birdeatsbug.factory = function (method) {
-          return function () {
-            const args = Array.prototype.slice.call(arguments);
-            args.unshift(method);
-            birdeatsbug.push(args);
-            return birdeatsbug;
-          };
-        };
-        for (let i = 0; i < birdeatsbug.methods.length; i++) {
-          const key = birdeatsbug.methods[i];
-          birdeatsbug[key] = birdeatsbug.factory(key);
-        }
-        birdeatsbug.load = function () {
-          const script = document.createElement("script");
-          script.type = "module";
-          script.async = true;
-          script.src = "https://sdk.birdeatsbug.com/v2/core.js";
-          const mountJsBefore = document.getElementsByTagName("script")[0] || document.body.firstChild;
-          mountJsBefore.parentNode.insertBefore(script, mountJsBefore);
-          const style = document.createElement("link");
-          style.rel = "stylesheet";
-          style.type = "text/css";
-          style.href = "https://sdk.birdeatsbug.com/v2/style.css";
-          const mountCssBefore = document.querySelector('link[rel="stylesheet"]') || mountJsBefore;
-          mountCssBefore.parentNode.insertBefore(style, mountCssBefore);
-        };
-        birdeatsbug.load();
-        window.birdeatsbug.setOptions({ publicAppId: "a444d810-d31f-4c94-983b-92a2e3d0f0d1" });
-      })();
-    </script>
   </body>
 </html>
