@@ -81,14 +81,6 @@ const inputs = createEffectInputs<CounterState>()({
     window.clearInterval(countingIntervalHandle);
   },
   fetchExternalNumber: () => {
-    const shouldFail = Math.round(Math.random()) === 1;
-
-    if (shouldFail) {
-      return fetch("https://httpstat.us/401")
-        .then(() => {})
-        .catch((error) => console.error(error));
-    }
-
     return fetch("https://random-data-api.com/api/v2/users")
       .then((response) => response.json())
       .then(({ id }: { id: number }) => {
