@@ -36,16 +36,16 @@ function createEffect<SliceName extends string, EffectName extends string, Effec
   return returnValue;
 }
 
-type SingleEffectCreator<State, Arg, Return = void> = (
+type SingleEffectCreator<AppState, Arg, Return = void> = (
   arg: Arg,
-  thunkApi: BaseThunkAPI<State, any>,
+  thunkApi: BaseThunkAPI<AppState, any>,
 ) => Return extends void ? void : Promise<Return>;
-type AllEffectCreators<State> = { [key: string]: SingleEffectCreator<State, any, any> };
+type AllEffectCreators<AppState> = { [key: string]: SingleEffectCreator<AppState, any, any> };
 // This helper returns its input unchanged. However, due to its type signature,
 // it ensures that you get the correct types for the thunkAPI argument in your input.
 export const createEffectInputs =
-  <State extends object>() =>
-  <T extends AllEffectCreators<State>>(t: T): T =>
+  <AppState extends object>() =>
+  <T extends AllEffectCreators<AppState>>(t: T): T =>
     t;
 
 type FirstArgumentOf<T> = T extends (firstArgument: infer U, ...maybeMoreArguments: any[]) => any ? U : never;
@@ -68,8 +68,8 @@ type EmptyObject = {
 };
 
 export const createEffects =
-  <State extends {}>() =>
-  <SliceName extends string, Inputs extends AllEffectCreators<State>>(
+  <AppState extends {}>() =>
+  <SliceName extends string, Inputs extends AllEffectCreators<AppState>>(
     inputs: Inputs,
     mapper: ReturnType<typeof forSlice>,
   ): {

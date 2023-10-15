@@ -106,7 +106,7 @@ Define your effects for your slices:
 ```typescript
 import { createEffectInputs, createEffects, forSlice, addEffect } from "effin-redux";
 
-const inputs = createEffectInputs<CounterState>()({
+const inputs = createEffectInputs<AppState>()({
   fetchExternalNumber: () => {
     return fetch("https://www.randomnumberapi.com/api/v1.0/random?count=1")
       .then((response) => response.json())
