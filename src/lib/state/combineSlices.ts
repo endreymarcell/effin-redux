@@ -29,10 +29,18 @@ export const combineSlices = <Slices extends readonly Slice[], AppState extends 
         dieUnlessTest("combineSlices received an undefined slice");
         continue;
       }
-      appState = {
-        ...appState,
-        [slice.name]: slice.reducer({ ...appState[slice.name], $$appState: appState }, action),
-      };
+      try {
+        const newStateForSlice = slice.reducer({ ...appState[slice.name], $$appState: appState }, action);
+        appState = {
+          ...appState,
+          [slice.name]: newStateForSlice,
+        };
+      } catch (error: any) {
+        console.error(
+          `Exception thrown from the reducer of the '${slice.name}' slice while handling the '${action.type}' action:`,
+          error,
+        );
+      }
     }
     return withoutAppStates(appState);
   }) as any;
