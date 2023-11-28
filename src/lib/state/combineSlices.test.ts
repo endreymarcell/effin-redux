@@ -1,8 +1,10 @@
 import { counterSlice, CounterState } from "../../demo-app/slices/counter";
 import { fizzBuzzSlice, FizzBuzzState } from "../../demo-app/slices/fizzBuzz";
 import { infoSlice, InfoState } from "../../demo-app/slices/info";
-import { describe, test, expect, expectTypeOf } from "vitest";
-import { getInitialState, SlicesToState } from "./combineSlices";
+import { beforeEach, describe, expect, expectTypeOf, test, vi } from "vitest";
+import { combineSlices, getInitialState, SlicesToState } from "./combineSlices";
+import { createSlice } from "@reduxjs/toolkit";
+import { configureStore } from "./appStore";
 
 describe("SlicesToState type helper", () => {
   test("single slice", () => {
@@ -57,5 +59,35 @@ describe("getInitialState", () => {
       counter: counterSlice.getInitialState(),
     });
     expectTypeOf(initialState).toMatchTypeOf<ExpectedState>();
+  });
+});
+
+const errorSlice = createSlice({
+  name: "error",
+  initialState: {},
+  reducers: {
+    testAction: () => {
+      throw new Error("Catch me if you can");
+    },
+  },
+});
+
+describe("exceptions thrown from the reducers", () => {
+  beforeEach(() => {
+    global.console.error = vi.fn();
+  });
+
+  test("exceptions are being caught", () => {
+    const store = configureStore(combineSlices([errorSlice] as const));
+    expect(() => store.dispatch(errorSlice.actions.testAction())).not.toThrow();
+  });
+
+  test("onError callback is being called", () => {
+    const onError = vi.fn();
+    const store = configureStore(combineSlices([errorSlice] as const, onError));
+
+    store.dispatch(errorSlice.actions.testAction());
+
+    expect(onError).toHaveBeenCalled();
   });
 });

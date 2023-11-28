@@ -21,6 +21,7 @@ export type SlicesToState<Slices extends readonly Slice[]> = {
 
 export const combineSlices = <Slices extends readonly Slice[], AppState extends SlicesToState<Slices>>(
   slices: Slices,
+  onError?: (error: Error, sliceName: string, actionType: string) => void,
 ): Reducer<AppState> => {
   return ((state: AppState, action: AnyAction): AppState => {
     let appState = state === undefined ? getInitialState(slices) : (produce(state, (state) => state) as any); // TODO fix the type
@@ -40,6 +41,7 @@ export const combineSlices = <Slices extends readonly Slice[], AppState extends 
           `Exception thrown from the reducer of the '${slice.name}' slice while handling the '${action.type}' action:`,
           error,
         );
+        onError?.(error, slice.name, action.type);
       }
     }
     return withoutAppStates(appState);
