@@ -29,6 +29,7 @@ function createEffect<SliceName extends string, EffectName extends string, Effec
     }
   };
 
+  returnValue.__identifier = effectIdentifier;
   returnValue.pending = simpleThunk.pending;
   returnValue.fulfilled = simpleThunk.fulfilled;
   returnValue.rejected = simpleThunk.rejected;
