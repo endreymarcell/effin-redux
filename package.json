@@ -1,6 +1,6 @@
 {
   "name": "effin-redux",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Extend redux-toolkit with side effect handling and layered reducers",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
