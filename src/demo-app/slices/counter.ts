@@ -107,3 +107,5 @@ const testInputs = createEffectInputs<CounterState>()({
 const inputsForEnvironment: typeof inputs = import.meta.env.VITEST === "true" ? testInputs : inputs;
 
 const effects = createEffects<CounterState>()(inputsForEnvironment, forSlice("counter"));
+
+export const counterEffects = effects;
