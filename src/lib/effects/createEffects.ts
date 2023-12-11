@@ -1,5 +1,5 @@
 import mapValues from "lodash/mapValues";
-import { AsyncThunk, Slice } from "@reduxjs/toolkit";
+import { AsyncThunk } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BaseThunkAPI } from "@reduxjs/toolkit/dist/createAsyncThunk";
 import { EffectIdentifier, thunkLookupTable } from "./thunkLookupTable";
