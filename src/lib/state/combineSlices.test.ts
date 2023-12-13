@@ -78,13 +78,13 @@ describe("exceptions thrown from the reducers", () => {
   });
 
   test("exceptions are being caught", () => {
-    const store = configureStore(combineSlices([errorSlice] as const));
+    const store = configureStore({ reducer: combineSlices([errorSlice] as const) });
     expect(() => store.dispatch(errorSlice.actions.testAction())).not.toThrow();
   });
 
   test("onError callback is being called", () => {
     const onError = vi.fn();
-    const store = configureStore(combineSlices([errorSlice] as const, onError));
+    const store = configureStore({ reducer: combineSlices([errorSlice] as const, onError) });
 
     store.dispatch(errorSlice.actions.testAction());
 
