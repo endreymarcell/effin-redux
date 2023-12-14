@@ -7,7 +7,8 @@ export const Component: React.FunctionComponent = () => {
   const count = useAppSelector((state) => state.counter.count);
   const fizzBuzz = useAppSelector((state) => state.fizzBuzz.value);
   const isCounting = useAppSelector((state) => state.counter.isCounting);
-  const isWaitingForExternalNumber = useAppSelector((state) => state.counter.isWaitingForExternalNumber);
+  const externalErrorFetchingState = useAppSelector((state) => state.counter.externalErrorFetchingState);
+  const isWaitingForExternalNumber = externalErrorFetchingState === "pending";
 
   const dispatch = useAppDispatch();
   const onStartCountingClicked = () => dispatch(counterSlice.actions.startCountingClicked());

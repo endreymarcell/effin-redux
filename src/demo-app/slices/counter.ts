@@ -6,14 +6,14 @@ export type CounterState = {
   count: number;
   isCounting: boolean;
   _countingIntervalHandle: number | null;
-  isWaitingForExternalNumber: boolean;
+  externalErrorFetchingState: "initial" | "pending" | "fulfilled" | "rejected";
 };
 
 const initialState: CounterState = {
   count: 0,
   isCounting: false,
   _countingIntervalHandle: null,
-  isWaitingForExternalNumber: false,
+  externalErrorFetchingState: "initial",
 };
 
 export const counterSlice = createSlice({
@@ -56,11 +56,14 @@ export const counterSlice = createSlice({
         state.isCounting = false;
       })
       .addCase(effects.fetchExternalNumber.pending, (state) => {
-        state.isWaitingForExternalNumber = true;
+        state.externalErrorFetchingState = "pending";
       })
       .addCase(effects.fetchExternalNumber.fulfilled, (state, action) => {
-        state.isWaitingForExternalNumber = false;
+        state.externalErrorFetchingState = "fulfilled";
         state.count = action.payload;
+      })
+      .addCase(effects.fetchExternalNumber.rejected, (state) => {
+        state.externalErrorFetchingState = "rejected";
       })
       .addCase(effects.setSpecificNumber.fulfilled, (state, action) => {
         state.count = action.payload.requestedNumber;
