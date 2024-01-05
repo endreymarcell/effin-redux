@@ -1,7 +1,7 @@
 import { setStoreForScheduledEffects } from "../effects";
 import { withEffects } from "../effects";
 import { configureStore as originalConfigureStore, ConfigureStoreOptions, Reducer } from "@reduxjs/toolkit";
-import { replaceEffect } from "../effects/thunkLookupTable";
+import { replaceEffect } from "../effects/replaceEffect";
 
 type TestUtils = {
   replaceEffect: typeof replaceEffect;
