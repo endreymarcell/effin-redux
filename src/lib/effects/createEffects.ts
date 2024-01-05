@@ -37,6 +37,8 @@ function createEffect<SliceName extends string, EffectName extends string, Effec
   return returnValue;
 }
 
+export const __createEffect__exposedForTesting = createEffect;
+
 type SingleEffectCreator<AppState, Arg, Return = void> = (
   arg: Arg,
   thunkApi: BaseThunkAPI<AppState, any>,

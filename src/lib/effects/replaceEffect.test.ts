@@ -4,15 +4,40 @@ import { counterEffects, counterSlice } from "../../demo-app/slices/counter";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 describe("replaceEffect", () => {
-  test("replace original effect", async () => {
+  test("replacement is called when effect is triggered", async () => {
     const store = createAppStore();
 
     const replacement = vi.fn();
-    store.testUtils.replaceEffect(counterEffects.fetchExternalNumber, () => replacement());
+    store.testUtils.replaceEffect(counterEffects.fetchExternalNumber, replacement);
 
     store.dispatch(counterSlice.actions.externalNumberRequested());
     await new Promise(process.nextTick);
     expect(replacement).toHaveBeenCalled();
+  });
+
+  test("replaced effect resolves with different value", async () => {
+    const store = createAppStore();
+    expect(store.getState().counter.count).toBe(0);
+
+    const replacement = vi.fn(async () => -100);
+    store.testUtils.replaceEffect(counterEffects.fetchExternalNumber, replacement);
+
+    store.dispatch(counterSlice.actions.externalNumberRequested());
+    await new Promise(process.nextTick);
+    expect(store.getState().counter.count).toBe(-100);
+  });
+
+  test("replaced effect rejects rather than resolves", async () => {
+    const store = createAppStore();
+
+    const replacement = vi.fn(() => {
+      throw new Error("test error");
+    });
+    store.testUtils.replaceEffect(counterEffects.fetchExternalNumber, replacement);
+
+    store.dispatch(counterSlice.actions.externalNumberRequested());
+    await new Promise(process.nextTick);
+    expect(store.getState().counter.externalErrorFetchingState).toBe("rejected");
   });
 
   test("unregistered effect", async () => {
