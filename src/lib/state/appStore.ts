@@ -1,10 +1,11 @@
 import { setStoreForScheduledEffects } from "../effects";
 import { withEffects } from "../effects";
 import { configureStore as originalConfigureStore, ConfigureStoreOptions, Reducer } from "@reduxjs/toolkit";
-import { replaceEffect } from "../effects/replaceEffect";
+import { replaceEffect, restoreEffect } from "../effects/replaceEffect";
 
 type TestUtils = {
   replaceEffect: typeof replaceEffect;
+  restoreEffect: typeof restoreEffect;
 };
 
 export function configureStore<State>({
@@ -14,6 +15,9 @@ export function configureStore<State>({
   const store = originalConfigureStore({ ...rest, reducer: withEffects(reducer) });
   setStoreForScheduledEffects(store);
   const storeWithTestUtils: typeof store & { testUtils: TestUtils } = store as any;
-  storeWithTestUtils.testUtils = { replaceEffect };
+  storeWithTestUtils.testUtils = {
+    replaceEffect,
+    restoreEffect,
+  };
   return storeWithTestUtils;
 }
