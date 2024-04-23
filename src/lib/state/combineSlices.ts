@@ -25,13 +25,21 @@ export const combineSlices = <Slices extends readonly Slice[], AppState extends 
 ): Reducer<AppState> => {
   return ((state: AppState, action: AnyAction): AppState => {
     let appState = state === undefined ? getInitialState(slices) : (produce(state, (state) => state) as any); // TODO fix the type
+    const originalAppState = cloneDeep(appState);
     for (const slice of slices) {
       if (slice === undefined) {
         dieUnlessTest("combineSlices received an undefined slice");
         continue;
       }
       try {
-        const newStateForSlice = slice.reducer({ ...appState[slice.name], $$appState: appState }, action);
+        const newStateForSlice = slice.reducer(
+          {
+            ...appState[slice.name],
+            $$appState: appState,
+            $$originalAppState: originalAppState,
+          },
+          action,
+        );
         appState = {
           ...appState,
           [slice.name]: newStateForSlice,
@@ -65,6 +73,7 @@ export function getInitialState<Slices extends readonly Slice[], AppState extend
 type SliceStateWithMaybeAppState = {
   [key: string]: unknown;
   $$appState?: unknown;
+  $$originalAppState?: unknown;
 };
 
 function withoutAppStates<State extends { [key: string]: SliceStateWithMaybeAppState }>(state: State): State {
@@ -72,6 +81,9 @@ function withoutAppStates<State extends { [key: string]: SliceStateWithMaybeAppS
     typedObjectKeys(draft).forEach((sliceName) => {
       if ("$$appState" in draft[sliceName]) {
         delete draft[sliceName].$$appState;
+      }
+      if ("$$originalAppState" in draft[sliceName]) {
+        delete draft[sliceName].$$originalAppState;
       }
     });
   });
