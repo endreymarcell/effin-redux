@@ -34,13 +34,13 @@ export const store = configureStore({ reducer: appReducer });
 export type AppState = ReturnType<typeof store.getState>
 ```
 
-Make sure to also create the `readAppState()` helper:
+Make sure to also create the helpers that allow reading the state of other slices:
 
 ```typescript
-export const { readAppState } = getHelpers<AppState>();
+export const { readAppState, readOriginalAppState } = getHelpers<AppState>();
 ```
 
-In your slices, you can use the `readAppState()` helper to get access to the root state, not just the slice's state:
+In your slices, you can use these helpers to get access to the root state, not just the slice's state:
 
 ```typescript
 // slices/fizzBuzz.ts
@@ -62,6 +62,10 @@ export const fizzBuzzSlice = createSlice({
   ),
 });
 ```
+
+Note:
+- `readAppState()` returns the instance of the state which could already have been modified by any other slices during the handling of this action. If you use it, be aware that the order in which your slices are executed matters.
+- `readOriginalAppState()` returns the app state from before any slice reducers have been executed. If you only use this one, the order of your reducer slices does not matter.
 
 #### References
 
