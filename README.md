@@ -63,7 +63,7 @@ export const fizzBuzzSlice = createSlice({
 });
 ```
 
-Note:
+#### Note:
 - `readAppState()` returns the instance of the state which could already have been modified by any other slices during the handling of this action. If you use it, be aware that the order in which your slices are executed matters.
 - `readOriginalAppState()` returns the app state from before any slice reducers have been executed. If you only use this one, the order of your reducer slices does not matter.
 
