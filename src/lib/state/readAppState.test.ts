@@ -52,3 +52,19 @@ describe("reading app state in slice reducers", () => {
     expect(store.getState().follower.leaderOriginalCount).toBe(0);
   });
 });
+
+describe("readAppState", () => {
+  test("reads app state from object if it is defined", () => {
+    const state = { $$appState: { foo: "bar" } };
+    const stateWithNoAppStateOnType = state as {};
+    const helpers = getHelpers();
+    expect(helpers.readAppState(stateWithNoAppStateOnType)).toEqual({ foo: "bar" });
+  });
+  test("throws an error if app state is not defined", () => {
+    const state = {};
+    const helpers = getHelpers();
+    expect(() => helpers.readAppState(state)).toThrowError(
+      "Cannot read app state from object. Are you sure you got this directly from the reducer?",
+    );
+  });
+});
