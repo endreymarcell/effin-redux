@@ -8,7 +8,16 @@ export function getHelpers<AppState>() {
       if (maybeAppState === undefined) {
         throw new Error("Cannot read app state from object. Are you sure you got this directly from the reducer?");
       }
-      return _.mapValues(maybeAppState, (sliceState) => ({ ...sliceState, $$appState: maybeAppState }));
+      return _.mapValues(maybeAppState, (sliceState) => {
+        const sliceStateWithAppState = { ...sliceState, $$appState: maybeAppState };
+        return new Proxy(sliceStateWithAppState, {
+          set: () => {
+            throw new Error(
+              "Cannot modify slice state that was acquired via readAppState. You can only modify the state draft you got directly from the reducer.",
+            );
+          },
+        });
+      });
     },
     readOriginalAppState: (state: any): AppState => state.$$originalAppState,
   };

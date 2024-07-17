@@ -54,16 +54,16 @@ describe("reading app state in slice reducers", () => {
 });
 
 describe("readAppState", () => {
+  const appState = {
+    counter: { count: 3 },
+    fizzBuzz: { value: "fizz" },
+  };
+  const counterSliceStateInReducer = {
+    ...appState.counter,
+    $$appState: appState,
+  };
+  const { readAppState } = getHelpers<typeof appState>();
   test("reads app state from object if it is defined", () => {
-    const appState = {
-      counter: { count: 3 },
-      fizzBuzz: { value: "fizz" },
-    };
-    const counterSliceStateInReducer = {
-      ...appState.counter,
-      $$appState: appState,
-    };
-    const { readAppState } = getHelpers<typeof appState>();
     expect(readAppState(counterSliceStateInReducer).counter).toContain({ count: 3 });
   });
   test("throws an error if app state is not defined", () => {
@@ -74,16 +74,6 @@ describe("readAppState", () => {
     );
   });
   test("reads app state infinitely deep", () => {
-    const appState = {
-      counter: { count: 3 },
-      fizzBuzz: { value: "fizz" },
-    };
-    const counterSliceStateInReducer = {
-      ...appState.counter,
-      $$appState: appState,
-    };
-    const { readAppState } = getHelpers<typeof appState>();
-
     const firstLevelAppState = readAppState(counterSliceStateInReducer);
     expect(firstLevelAppState.fizzBuzz.value).toBe("fizz");
 
@@ -98,5 +88,13 @@ describe("readAppState", () => {
 
     const fifthLevelAppState = readAppState(fourthLevelAppState.fizzBuzz);
     expect(fifthLevelAppState.counter.count).toBe(3);
+  });
+  test("trying to modify anything on the app state throws", () => {
+    expect(() => counterSliceStateInReducer.count++).not.toThrowError();
+
+    const appState = readAppState(counterSliceStateInReducer);
+    expect(() => appState.counter.count++).toThrowError(
+      "Cannot modify slice state that was acquired via readAppState.",
+    );
   });
 });
