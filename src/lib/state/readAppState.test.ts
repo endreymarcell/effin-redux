@@ -55,10 +55,16 @@ describe("reading app state in slice reducers", () => {
 
 describe("readAppState", () => {
   test("reads app state from object if it is defined", () => {
-    const state = { $$appState: { foo: "bar" } };
-    const stateWithNoAppStateOnType = state as {};
-    const helpers = getHelpers();
-    expect(helpers.readAppState(stateWithNoAppStateOnType)).toEqual({ foo: "bar" });
+    const appState = {
+      counter: { count: 3 },
+      fizzBuzz: { value: "fizz" },
+    };
+    const counterSliceStateInReducer = {
+      ...appState.counter,
+      $$appState: appState,
+    };
+    const { readAppState } = getHelpers<typeof appState>();
+    expect(readAppState(counterSliceStateInReducer).counter).toContain({ count: 3 });
   });
   test("throws an error if app state is not defined", () => {
     const state = {};
@@ -66,5 +72,31 @@ describe("readAppState", () => {
     expect(() => helpers.readAppState(state)).toThrowError(
       "Cannot read app state from object. Are you sure you got this directly from the reducer?",
     );
+  });
+  test("reads app state infinitely deep", () => {
+    const appState = {
+      counter: { count: 3 },
+      fizzBuzz: { value: "fizz" },
+    };
+    const counterSliceStateInReducer = {
+      ...appState.counter,
+      $$appState: appState,
+    };
+    const { readAppState } = getHelpers<typeof appState>();
+
+    const firstLevelAppState = readAppState(counterSliceStateInReducer);
+    expect(firstLevelAppState.fizzBuzz.value).toBe("fizz");
+
+    const secondLevelAppState = readAppState(firstLevelAppState.fizzBuzz);
+    expect(secondLevelAppState.counter.count).toBe(3);
+
+    const thirdLevelAppState = readAppState(secondLevelAppState.counter);
+    expect(thirdLevelAppState.counter.count).toBe(3);
+
+    const fourthLevelAppState = readAppState(thirdLevelAppState.counter);
+    expect(fourthLevelAppState.fizzBuzz.value).toBe("fizz");
+
+    const fifthLevelAppState = readAppState(fourthLevelAppState.fizzBuzz);
+    expect(fifthLevelAppState.counter.count).toBe(3);
   });
 });
