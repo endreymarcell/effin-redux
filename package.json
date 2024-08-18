@@ -26,6 +26,7 @@
   "author": "Marcell Endrey endrey.marcell@gmail.com",
   "license": "MIT",
   "devDependencies": {
+    "@playwright/test": "^1.46.1",
     "@reduxjs/toolkit": "^1.9.0",
     "@types/lodash": "^4.14.189",
     "@types/node": "^18.11.15",
