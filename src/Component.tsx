@@ -32,7 +32,7 @@ export const Component: React.FunctionComponent = () => {
           Count is {count}
         </button>
         <button className="outline secondary" id="current-fizzbuzz" style={{ cursor: "initial" }}>
-          {fizzBuzz ?? "-"}
+          {fizzBuzz ?? <i style={{ color: "#bbb" }}>neither fizz nor buzz</i>}
         </button>
         <div className="grid">
           <button onClick={onStartCountingClicked} disabled={isCounting}>
