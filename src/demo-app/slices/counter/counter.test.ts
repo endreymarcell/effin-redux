@@ -1,6 +1,6 @@
 import { describe, test, expect } from "vitest";
-import { createAppStore } from "../app";
-import { counterSlice, CounterState } from "./counter";
+import { createAppStore } from "../../app";
+import { counterSlice, CounterState } from "./slice";
 
 const { actions, reducer, getInitialState } = counterSlice;
 const initialState = getInitialState();

@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createExtraReducers } from "../../lib";
-import { readAppState } from "../app";
+import { createExtraReducers } from "../../../lib";
+import { readAppState } from "../../app";
+import { calculateFizzBuzz } from "./helpers";
 
-type FizzBuzzValue = null | "fizz" | "buzz" | "fizzbuzz";
+export type FizzBuzzValue = null | "fizz" | "buzz" | "fizzbuzz";
 
 export type FizzBuzzState = {
   value: FizzBuzzValue;
@@ -26,21 +27,3 @@ export const fizzBuzzSlice = createSlice({
     );
   }),
 });
-
-function calculateFizzBuzz(input: number): FizzBuzzValue {
-  if (input === 0) {
-    return null;
-  }
-
-  const isFizz = input % 3 === 0;
-  const isBuzz = input % 5 === 0;
-  if (isFizz && isBuzz) {
-    return "fizzbuzz";
-  } else if (isFizz) {
-    return "fizz";
-  } else if (isBuzz) {
-    return "buzz";
-  } else {
-    return null;
-  }
-}

@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { createAppStore } from "./app";
-import { counterSlice } from "./slices/counter";
-import { infoSlice } from "./slices/info";
+import { counterSlice } from "./slices/counter/";
+import { infoSlice } from "./slices/info/";
 
 describe("app with combined slices", () => {
   test("actions work as expected", () => {

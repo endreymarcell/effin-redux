@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import { counterSlice } from "./demo-app/slices/counter";
+import { counterSlice } from "./demo-app/slices/counter/slice";
 import logo from "../static/logo-xs.png";
 
 export const Component: React.FunctionComponent = () => {

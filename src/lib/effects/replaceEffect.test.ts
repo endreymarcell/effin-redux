@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import { createAppStore } from "../../demo-app/app";
-import { counterEffects, counterSlice } from "../../demo-app/slices/counter";
+import { counterEffects, counterSlice } from "../../demo-app/slices/counter/";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 describe("replaceEffect", () => {
