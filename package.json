@@ -15,6 +15,7 @@
     "test": "npm run test:func -- run && npm run test:type",
     "test:type": "tsc --noEmit",
     "test:func": "vitest",
+    "test:e2e": "pnpm exec playwright test",
     "format": "prettier -w 'src/**/*.*'",
     "build": "rm -rf dist && npm run build:cjs && npm run build:esm && scripts/fixup-cjs-esm-distribution.sh",
     "build:cjs": "tsc -p tsconfig.build.cjs.json",
