@@ -12,7 +12,7 @@ export default defineConfig({
     baseURL: devServerLocation.fullUrl,
     trace: "on-first-retry",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [{ name: "firefox", use: { ...devices["Desktop Firefox"] } }],
   webServer: {
     command: "pnpm run dev",
     url: devServerLocation.fullUrl,
