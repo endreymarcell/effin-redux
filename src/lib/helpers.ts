@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { mapValues } from "lodash-es";
 
 export function getHelpers<AppState>() {
   return {
@@ -8,7 +8,7 @@ export function getHelpers<AppState>() {
       if (maybeAppState === undefined) {
         throw new Error("Cannot read app state from object. Are you sure you got this directly from the reducer?");
       }
-      return _.mapValues(maybeAppState, (sliceState) => {
+      return mapValues(maybeAppState, (sliceState) => {
         const sliceStateWithAppState = { ...sliceState, $$appState: maybeAppState };
         return new Proxy(sliceStateWithAppState, {
           set: () => {
