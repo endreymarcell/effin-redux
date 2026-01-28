@@ -20,7 +20,7 @@
   "scripts": {
     "test": "npm run test:func -- run && npm run test:type",
     "test:type": "tsc --noEmit",
-    "test:func": "vitest src",
+    "test:func": "vitest",
     "test:e2e": "pnpm exec playwright test",
     "format": "prettier -w 'src/**/*.*'",
     "build": "tsup",
