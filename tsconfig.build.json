@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "include": ["src/index.ts", "src/vite-env.d.ts"],
-  "exclude": ["src/demo-app"],
-  "compilerOptions": {
-    "declaration": true,
-    "target": "ES5"
-  }
-}

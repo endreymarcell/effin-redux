@@ -1,4 +1,4 @@
-import mapValues from "lodash/mapValues";
+import { mapValues } from "lodash-es";
 import { AsyncThunk } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BaseThunkAPI } from "@reduxjs/toolkit/dist/createAsyncThunk";

@@ -1,4 +1,4 @@
-import cloneDeep from "lodash/cloneDeep";
+import { cloneDeep } from "lodash-es";
 import produce from "immer";
 import { AnyAction, Store } from "redux";
 import { nanoid, Reducer } from "@reduxjs/toolkit";
@@ -39,9 +39,9 @@ export const effectSchedulerReducer: Reducer = <State extends GenericAppStateWit
   const stateWithTaggedEffects = produce(state, (draft) => {
     for (const sliceName of typedObjectKeys(draft)) {
       const slice = draft[sliceName];
-      if ("$$effects" in slice && slice.$$effects) {
+      if (typeof slice === "object" && slice != null && "$$effects" in slice && slice.$$effects != null) {
         // Intentionally widening the type from SerializedEffect to SerializedEffectInstance
-        const effects: SerializedEffectInstance<any>[] = slice.$$effects;
+        const effects = slice.$$effects as SerializedEffectInstance<any>[];
         effects.forEach((effect) => {
           if (effect.instanceId !== undefined) {
             // Already tagged
@@ -122,12 +122,11 @@ export const effectRemoverReducer: Reducer = <State extends GenericAppStateWithE
     const stateWithoutThisEffect = produce(state, (draft) => {
       for (const sliceName of typedObjectKeys(draft)) {
         const slice = draft[sliceName];
-        if ("$$effects" in slice && slice.$$effects) {
+        if (typeof slice === "object" && slice != null && "$$effects" in slice && slice.$$effects != null) {
           // Remove the effect from the state based on its ID
-          slice.$$effects = slice.$$effects.filter(
-            (effect: SerializedEffectInstance<any>) => effect.instanceId !== action.payload.instanceId,
-          );
-          if (slice.$$effects.length === 0) {
+          const effects = slice.$$effects as SerializedEffectInstance<any>[];
+          slice.$$effects = effects.filter((effect) => effect.instanceId !== action.payload.instanceId);
+          if (effects.length === 0) {
             delete slice.$$effects;
           }
         }
