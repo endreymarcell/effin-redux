@@ -34,7 +34,6 @@
     "@playwright/test": "^1.46.1",
     "@reduxjs/toolkit": "^1.9.0",
     "@swc/core": "^1.15.8",
-    "@types/babel__core": "^7.20.5",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^25.0.6",
     "@types/react": "^18.0.26",
